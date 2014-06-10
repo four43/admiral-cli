@@ -1,0 +1,25 @@
+{
+  "name": "admiral-cli",
+  "version": "0.0.1",
+  "description": "It's a framework! A CLI framework for Node.js",
+  "main": "main.js",
+  "scripts": {
+    "test": "test/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/four43/admiral-cli.git"
+  },
+  "keywords": [
+    "cli",
+    "framework",
+    "parameters",
+    "parsing",
+    "commands"
+  ],
+  "author": "Seth Miller",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/four43/admiral-cli/issues"
+  }
+}
