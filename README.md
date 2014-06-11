@@ -5,6 +5,10 @@ It's a framework! A CLI framework for Node.js. There are a few command line inte
 available for Node.js already. These provide a lot of features, but I found them lacking in some basic
 validation features and we wanted to create one with less configuration but stronger validation.
 
+####Ideas from:
+
+* Chriso's great CLI framework (https://github.com/chriso/cli)
+
 ##Goals:
 
 * Commands
