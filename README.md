@@ -8,19 +8,20 @@ validation features and we wanted to create one with less configuration but stro
 ####Ideas from:
 
 * Chriso's great CLI framework (https://github.com/chriso/cli)
+* Visionmedia's JS port of Ruby's Commander (https://github.com/visionmedia/commander.js)
 
 ##Goals:
 
 * Commands
-    * Provide events for command based routing, e.g. git pull origin development
-    * Auto-complete on commands
+	* Provide events for command based routing, e.g. git pull origin development
+    * Auto-complete on commands (Phase 2)
 * Options
-    * Short and long options, e.g. ssh -i ~/key-file.pem
-    * Description
-    * Required
-    * Validation
+	* Short and long options, e.g. ssh -i ~/key-file.pem
+	* Description
+	* Required
+	* Validation
 * Flags
-    * Allow for single flags, e.g. rm -f
-    * Combined flags, e.g. rm -rf
+	* Allow for single flags, e.g. rm -f
+	* Combined flags, e.g. rm -rf
 * Order
-    * Allow custom order command, option, command or option, command etc.
+	* Allow custom order command, option, command or option, command etc.
