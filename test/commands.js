@@ -1,6 +1,7 @@
 var Cli = require('./../lib/cli'),
-	CliError = require('./../lib/error');
-/*
+	CliError = require('./../lib/error'),
+	Command = require('./../lib/command');
+
 exports.testCommandBasic = function (test) {
 	var cli = new Cli();
 
@@ -9,7 +10,7 @@ exports.testCommandBasic = function (test) {
 		.addCommandGroup(
 			'cmd1',
 			'main route for the program', [
-				['test1', 'Just a test parameter']
+				new Command('test1', 'The first command option')
 			],
 			function(command) {
 				result = command;
@@ -20,4 +21,3 @@ exports.testCommandBasic = function (test) {
 	test.equal(result, 'test1');
 	test.done();
 }
-	*/
