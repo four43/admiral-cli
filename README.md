@@ -10,9 +10,10 @@ with less configuration but stronger validation.
 Quick Example:
 
 ```javascript
-var Cli = require('cli');
+var cli = require('cli'),
+	CliInvalidInputError = require('cli').InvalidInputError,
+	CliConfigError = require('cli').ConfigError;
 
-var cli = new Cli();
 cli
 	.commandGroup('cmd', 'Commands are single words, no - or --s, and are one of the following:', [
 			new Command('add', 'The variable cmd will be set to add in this case', function(cli, command) { var do = 'stuff'; }),
@@ -25,10 +26,24 @@ cli
 	)
 	.flag('flagName', 'Flags are single phrases, set as a boolean', '-f', '--flag')
 	.flag('nonPassed', 'Flags that aren\'t passed are set as false', '-n', '--non')
-	.option('optName', 'Options are two parts, a key and a user supplied value', '-o', '--option', 'string', true)
-	.parse();
-	//Could call script with cliExample.js add --option myExample -f
-	//cli.params would be { 'cmd': 'add', 'flagName': true, 'nonPassed': false, 'optName': 'myExample' }
+	.option('optName', 'Options are two parts, a key and a user supplied value', '-o', '--option', 'string', true);
+
+//Parse Cli arguments
+try {
+	cli.parse();
+}
+catch(error) {
+	console.error(error);
+	if(error instanceof CliInvalidInputError) {
+		process.exit(2);
+	}
+	else if(error instanceof CliConfigError) {
+		console.error('Doh, configured something wrong.', error);
+		process.exit(1);
+	}
+}
+//Could call script with cliExample.js add --option myExample -f
+//cli.params would be { 'cmd': 'add', 'flagName': true, 'nonPassed': false, 'optName': 'myExample' }
 ```
 
 This library should be quite tested, make sure to check out the tests directory for other examples.
