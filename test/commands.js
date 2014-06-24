@@ -6,7 +6,7 @@ exports.testCommandBasic = function (test) {
 	var cli = new Cli();
 
 	cli
-		.addCommandGroup(
+		.commandGroup(
 			'cmd1',
 			'main route for the program', [
 				new Command('test1', 'The first command option'),
@@ -25,7 +25,7 @@ exports.testCommandBasicMultiple = function (test) {
 	var cli = new Cli();
 
 	cli
-		.addCommandGroup(
+		.commandGroup(
 			'cmd1',
 			'main route for the program', [
 				new Command('test1', 'The first command option'),
@@ -34,7 +34,7 @@ exports.testCommandBasicMultiple = function (test) {
 			null,
 			true
 		)
-		.addCommandGroup(
+		.commandGroup(
 			'cmd2',
 			'secondary route for the program', [
 				new Command('testA', 'The first command option'),
@@ -53,7 +53,7 @@ exports.testCommandMissing = function (test) {
 	var cli = new Cli();
 
 	cli
-		.addCommandGroup(
+		.commandGroup(
 			'cmd1',
 			'main route for the program', [
 				new Command('test1', 'The first command option'),
@@ -75,7 +75,7 @@ exports.testCommandCallbacks = function (test) {
 	var resultCommand = {};
 	var resultGroup = {};
 	cli
-		.addCommandGroup(
+		.commandGroup(
 			'cmd1',
 			'main route for the program', [
 				new Command('test1', 'The first command option', function(cli, command) {
@@ -105,7 +105,7 @@ exports.testExtraCommand = function(test) {
 	var cli = new Cli();
 
 	cli
-		.addCommandGroup(
+		.commandGroup(
 			'cmd1',
 			'main route for the program', [
 				new Command('test1', 'The first command option'),
