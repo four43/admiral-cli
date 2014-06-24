@@ -1,7 +1,7 @@
 {
 	"name": "admiral-cli",
 	"version": "0.1.0",
-	"description": "A Command Line Framework (CLI) framework for Node.js. There are a CLI frameworks available for Node.js already. Admiral has features like other CLI frameworks, but adds validation and some callbacks in key places. We wanted to create one with less configuration but stronger validation.",
+	"description": "A Command Line Framework (CLI) framework for Node.js. Admiral has features like other CLI frameworks, but adds validation and some callbacks in key places. Less configuration, stronger validation.",
 	"main": "main",
 	"scripts": {
 		"test": "nodeunit test"
