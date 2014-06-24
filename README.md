@@ -5,6 +5,10 @@ A Command Line Framework (CLI) framework for Node.js. There are a CLI frameworks
 has features like other CLI frameworks, but adds validation and some callbacks in key places. We wanted to create one
 with less configuration but stronger validation.
 
+Master: [![Build Status](https://travis-ci.org/four43/admiral-cli.svg?branch=master)](https://travis-ci.org/four43/admiral-cli)
+
+Dependencies (only debug) ![Dependencies](https://david-dm.org/four43/admiral-cli.png)
+
 ##Usage
 
 Quick Example:
