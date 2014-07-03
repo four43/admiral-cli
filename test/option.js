@@ -9,6 +9,16 @@ exports.testOptionBasic = function (test) {
 	test.equal(cli.params.test1, 'value1');
 	test.done();
 }
+
+exports.testOptionBasicValidateNumberType = function (test) {
+	var cli = new Cli();
+	cli
+		.option('test1', 'Just a test parameter', '-t', '--test1', 'number')
+		.parse(['cli-test.js', '-t', '123.5']);
+	test.equal(cli.params.test1, 123.5);
+	test.done();
+}
+
 exports.testOptionBasicMissingOkay = function (test) {
 	var cli = new Cli();
 	cli
@@ -167,6 +177,29 @@ exports.testOptionNumValuesStar = function(test) {
 	cli
 		.option('test1', 'Just a test parameter', '-t', '--test1', 'string', '*')
 		.parse(['cli-test.js', '-t', 'hello', 'world', 'here', 'are', 'many']);
+
+	var actual = ['hello', 'world', 'here', 'are', 'many'];
+	for(var i = 0; i < actual.length; i++) {
+		test.equal(cli.params.test1[i], actual[i]);
+	}
+
+	cli.option('other', 'Just a test parameter', '-o', '--other', 'string')
+		.parse(['cli-test.js', '-t', 'hello', 'world', '-o', 'something']);
+	var actual = ['hello', 'world'];
+	for(var i = 0; i < actual.length; i++) {
+		test.equal(cli.params.test1[i], actual[i]);
+	}
+	test.equal(cli.params.other, 'something');
+
+	test.done();
+}
+
+exports.testOptionNumValuesStarOtherOptions = function(test) {
+	var cli = new Cli();
+	cli
+		.option('otherOpt', 'Here is another option', '-a', '', 'string')
+		.option('test1', 'Just a test parameter', '-t', '--test1', 'string', '*')
+		.parse(['cli-test.js', '-t', 'hello', 'world', 'here', 'are', 'many', '-a', 'derp']);
 
 	var actual = ['hello', 'world', 'here', 'are', 'many'];
 	for(var i = 0; i < actual.length; i++) {
