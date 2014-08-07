@@ -1,9 +1,10 @@
 Admiral-CLI
 ===========
+_A tool for Node.js to make applications easier to write, easier to use._
 
-A Command Line Framework (CLI) framework for Node.js. There are a CLI frameworks available for Node.js already. Admiral
-has features like other CLI frameworks, but adds validation and some callbacks in key places. We wanted to create one
-with less configuration but stronger validation.
+Admiral-CLI is a Command Line Framework (CLI) framework for Node.js. There are CLI frameworks available for Node.js already. Admiral
+has features like other CLI frameworks, but adds validation and some callbacks in key places to make apps easier to write.
+We wanted to create a framework with less configuration but stronger validation.
 
 Master: [![Build Status](https://travis-ci.org/four43/admiral-cli.svg?branch=master)](https://travis-ci.org/four43/admiral-cli)
 
@@ -14,10 +15,11 @@ Dependencies (only debug) ![Dependencies](https://david-dm.org/four43/admiral-cl
 Quick Example:
 
 ```javascript
-var cli = require('cli'),
+var Cli = require('cli'),
 	CliInvalidInputError = require('cli').InvalidInputError,
 	CliConfigError = require('cli').ConfigError;
 
+var cli = new Cli();
 cli
 	.commandGroup('cmd', 'Commands are single words, no - or --s, and are one of the following:', [
 			new Command('add', 'The variable cmd will be set to add in this case', function(cli, command) { var do = 'stuff'; }),
@@ -51,6 +53,24 @@ catch(error) {
 ```
 
 This library should be quite tested, make sure to check out the tests directory for other examples.
+
+###CLI Options
+There are some options for configuring Admiral-Cli that may be passed to the constructor.
+| Option         | Type (default) | Description                                                                                                          |
+|:-------------- |:-------------- | :------------------------------------------------------------------------------------------------------------------- |
+| scriptName     | String (null)  | The name of cli script, this is automatically parsed, but use this as an override. Used in displaying documentation. |
+| verboseEnabled | Boolean (true) | Automatically parse -v, -vv, -vvv, and --verbose                                                                     |
+
+Pass these options as an object to the constructor:
+
+```javascript
+var Cli = require('cli');
+
+var cli = new Cli({
+	scriptName: 'theNextBigThing.js',
+	verboseEnabled: true
+});
+```
 
 ###parse() and Params
 The `parse()` method parses the command line arguments (or a passed array) with the configured, command groups, flags,

@@ -4,7 +4,7 @@ var Cli = require('./lib/cli'),
 	CliConfigError = require('./lib/error/config');
 
 //Cli export as instantiated object
-exports = module.exports = new Cli;
+exports = module.exports = Cli;
 
 //Other exports for errors
 exports.InvalidInputError = CliInvalidInputError;
