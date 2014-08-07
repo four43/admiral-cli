@@ -56,6 +56,7 @@ This library should be quite tested, make sure to check out the tests directory 
 
 ###CLI Options
 There are some options for configuring Admiral-Cli that may be passed to the constructor.
+
 | Option           | Type (default) | Description                                                                                                          |
 |------------------|----------------|----------------------------------------------------------------------------------------------------------------------|
 | `scriptName`     | String (null)  | The name of CLI script, this is automatically parsed, but use this as an override. Used in displaying documentation. |
