@@ -10,6 +10,16 @@ Master: [![Build Status](https://travis-ci.org/four43/admiral-cli.svg?branch=mas
 
 Dependencies (only debug) ![Dependencies](https://david-dm.org/four43/admiral-cli.png)
 
+##Installation
+
+[![NPM](https://nodei.co/npm/admiral-cli.png?downloads=true&stars=true)](https://nodei.co/npm/admiral-cli/)
+
+Available via npm.
+
+```
+npm install --save admiral-cli
+```
+
 ##Usage
 
 Quick Example:
