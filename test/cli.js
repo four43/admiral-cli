@@ -1,4 +1,6 @@
-var Cli = require('./../lib/cli');
+var fs = require('fs'),
+	Cli = require('./../lib/cli'),
+	Command = require('./../lib/command');
 
 exports.testMergeSimple = function (test) {
 	var a = {
@@ -119,3 +121,92 @@ exports.testMergeSuperDeep = function (test) {
 	test.deepEqual(result, expected, 'testMergeDeep didn\'t work');
 	test.done();
 }
+
+exports.helpTextCommand = function (test) {
+	var cli = new Cli();
+	cli
+		.commandGroup(
+			'cmd1',
+			'main route for the program', [
+				new Command('test1', 'The first command option'),
+				new Command('test2', 'The second command option')
+			],
+			null,
+			true
+		)
+		.commandGroup(
+			'anotherCmd',
+			'Secondary command, changes the output of the thing', [
+				new Command('t1', 'To test the first bit'),
+				new Command('t2', 'To test the second bit')
+			],
+			null,
+			true
+		);
+	hookStdout();
+	cli.parse(['cli-test.js']);
+	unhookStdout();
+
+	var expected = fs.readFileSync(__dirname + '/outputs/helpTextCommand.txt', 'utf8');
+	test.equal(stdOutBuffer, expected);
+
+	test.done();
+}
+
+exports.helpTextFlags = function (test) {
+	var cli = new Cli();
+	cli
+		.flag('flag1', 'Just a test opt', '-t', '--test1')
+		.flag('flag2', 'Just another test opt', '-a')
+		.flag('flag3', 'The last test opt', null, '--muchLongerFlagName');
+
+	hookStdout();
+	cli.parse(['cli-test.js', '--help']);
+	unhookStdout();
+
+	var expected = fs.readFileSync(__dirname + '/outputs/helpTextFlags.txt', 'utf8');
+	test.equal(stdOutBuffer, expected);
+
+	test.done();
+}
+
+exports.helpTextOptions = function (test) {
+	var cli = new Cli();
+	cli
+		.option('option1', 'Just a test opt', '-t', '--test1')
+		.option('opt2', 'Just another test opt', '-a')
+		.option('optB', 'The last test opt', null, '--last');
+
+	hookStdout();
+	cli.parse(['cli-test.js', '--help']);
+	unhookStdout();
+
+	var expected = fs.readFileSync(__dirname + '/outputs/helpTextOptions.txt', 'utf8');
+	test.equal(stdOutBuffer, expected);
+
+	test.done();
+}
+
+
+/**
+ * Stdout overwrite
+ */
+var oldWrite;
+var stdOutBuffer = '';
+
+function hookStdout() {
+	stdOutBuffer = '';
+	oldWrite = process.stdout.write;
+	process.stdout.write = function (str) {
+		stdOutBuffer += str;
+	}.bind(this);
+}
+
+function unhookStdout() {
+	process.stdout.write = oldWrite;
+}
+
+hookStdout();
+console.log('Captured');
+unhookStdout();
+console.log("Buffer Test: " + stdOutBuffer);

@@ -3,7 +3,7 @@ var Cli = require('./../lib/cli'),
 	CliError = require('./../lib/error/abstract-error');
 
 exports.testVerbosePlain = function (test) {
-	var cli = new Cli();
+	var cli = new Cli({helpOnNoArgs: false});
 	cli.parse(['test.js']);
 	test.equal(cli.params.verbose, 0);
 	test.done();

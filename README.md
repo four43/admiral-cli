@@ -71,6 +71,8 @@ There are some options for configuring Admiral-Cli that may be passed to the con
 |------------------|----------------|----------------------------------------------------------------------------------------------------------------------|
 | `scriptName`     | String (null)  | The name of CLI script, this is automatically parsed, but use this as an override. Used in displaying documentation. |
 | `verboseEnabled` | Boolean (true) | Automatically parse `-v`, `-vv`, `-vvv`, and `--verbose`                                                             |
+| `helpEnabled`    | Boolean (true) | Enable help text output when passing `--help`                                                                        |
+| `helpOnNoArgs`   | Boolean (true) | Enable help text when no arguments are passed                                                                        |
 
 Pass these options as an object to the constructor:
 
@@ -127,7 +129,7 @@ flags, but they require a value after them.
 
 * Commands
 	* Provide events for command based routing, e.g. git pull origin development
-    * Auto-complete on commands (Phase 2)
+	* Auto-complete on commands (Phase 2)
 * Options
 	* Short and long options, e.g. ssh -i ~/key-file.pem
 	* Description
@@ -141,3 +143,7 @@ flags, but they require a value after them.
 * Errors
 	* InvalidInput Errors
 	* Configuration Errors
+
+###Contributing
+Please feel free to contribute in any way. Feature requests with use cases, bug reports, forks and code
+contributions are all welcome.

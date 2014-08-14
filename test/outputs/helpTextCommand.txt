@@ -1,0 +1,11 @@
+Usage: cli-test.js [cmd1] [anotherCmd]
+
+Commands:
+ cmd1       -     main route for the program                        
+            test1 The first command option                          
+            test2 The second command option                         
+                                                                    
+ anotherCmd -     Secondary command, changes the output of the thing
+            t1    To test the first bit                             
+            t2    To test the second bit                            
+

@@ -1,0 +1,7 @@
+Usage: cli-test.js [flags]
+
+Flags:
+ -t, --test1           Just a test opt      
+ -a                    Just another test opt
+ --muchLongerFlagName  The last test opt    
+
