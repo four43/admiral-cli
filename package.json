@@ -1,6 +1,6 @@
 {
   "name": "admiral-cli",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A Command Line Framework (CLI) framework for Node.js. Admiral has features like other CLI frameworks, but adds validation and some callbacks in key places. Less configuration, stronger validation.",
   "main": "main",
   "scripts": {
@@ -23,7 +23,7 @@
     "url": "https://github.com/four43/admiral-cli/issues"
   },
   "dependencies": {
-    "columnify": ">=1.2.1",
+    "columnify": "^1.2.1",
     "debug": "~1.0.2"
   },
   "devDependencies": {
