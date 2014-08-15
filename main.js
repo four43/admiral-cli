@@ -1,5 +1,6 @@
 #!/usr/bin/node
 var Cli = require('./lib/cli'),
+	CliCommand = require('./lib/command'),
 	CliInvalidInputError = require('./lib/error/invalid-input'),
 	CliConfigError = require('./lib/error/config');
 
@@ -9,3 +10,4 @@ exports = module.exports = Cli;
 //Other exports for errors
 exports.InvalidInputError = CliInvalidInputError;
 exports.ConfigError = CliConfigError;
+exports.Command = CliCommand;

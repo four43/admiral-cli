@@ -25,15 +25,16 @@ npm install --save admiral-cli
 Quick Example:
 
 ```javascript
-var Cli = require('cli'),
-	CliInvalidInputError = require('cli').InvalidInputError,
-	CliConfigError = require('cli').ConfigError;
+var Cli = require('admiral-cli'),
+    CliCommand = require('admiral-cli').Command,
+	CliInvalidInputError = require('admiral-cli').InvalidInputError,
+	CliConfigError = require('admiral-cli').ConfigError;
 
 var cli = new Cli();
 cli
 	.commandGroup('cmd', 'Commands are single words, no - or --s, and are one of the following:', [
-			new Command('add', 'The variable cmd will be set to add in this case', function(cli, command) { var do = 'stuff'; }),
-			new Command('another', 'A user could also specify another')
+			new CliCommand('add', 'The variable cmd will be set to add in this case', function(cli, command) { var do = 'stuff'; }),
+			new CliCommand('another', 'A user could also specify another')
 		],
 		function commandLevelCallback(cli, command) {
 			var theCommandObjThatWasChosen = command;
