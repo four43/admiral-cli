@@ -147,6 +147,7 @@ exports.helpTextCommand = function (test) {
 	cli.parse(['cli-test.js']);
 	unhookStdout();
 
+	console.log(stdOutBuffer);
 	var expected = fs.readFileSync(__dirname + '/outputs/helpTextCommand.txt', 'utf8');
 	test.equal(stdOutBuffer, expected);
 

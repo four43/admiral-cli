@@ -74,6 +74,7 @@ There are some options for configuring Admiral-Cli that may be passed to the con
 | `verboseEnabled` | Boolean (true) | Automatically parse `-v`, `-vv`, `-vvv`, and `--verbose`                                                             |
 | `helpEnabled`    | Boolean (true) | Enable help text output when passing `--help`                                                                        |
 | `helpOnNoArgs`   | Boolean (true) | Enable help text when no arguments are passed                                                                        |
+| `exitOnHelp`     | Boolean (true) | Exit after help is run.                                                                                              |
 
 Pass these options as an object to the constructor:
 
