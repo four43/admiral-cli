@@ -144,7 +144,7 @@ exports.helpTextCommand = function (test) {
 			true
 		);
 	hookStdout();
-	cli.parse(['cli-test.js']);
+	cli.parse(['node', 'cli-test.js']);
 	unhookStdout();
 
 	console.log(stdOutBuffer);
@@ -162,7 +162,7 @@ exports.helpTextFlags = function (test) {
 		.flag('flag3', 'The last test opt', null, '--muchLongerFlagName');
 
 	hookStdout();
-	cli.parse(['cli-test.js', '--help']);
+	cli.parse(['node', 'cli-test.js', '--help']);
 	unhookStdout();
 
 	var expected = fs.readFileSync(__dirname + '/outputs/helpTextFlags.txt', 'utf8');
@@ -179,7 +179,7 @@ exports.helpTextOptions = function (test) {
 		.option('optB', 'The last test opt', null, '--last');
 
 	hookStdout();
-	cli.parse(['cli-test.js', '--help']);
+	cli.parse(['node', 'cli-test.js', '--help']);
 	unhookStdout();
 
 	var expected = fs.readFileSync(__dirname + '/outputs/helpTextOptions.txt', 'utf8');

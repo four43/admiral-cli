@@ -13,10 +13,10 @@ exports.testCommandBasic = function (test) {
 				new Command('test2', 'The second command option')
 			]
 		)
-		.parse(['cli-test.js', 'test1']);
+		.parse(['node', 'cli-test.js', 'test1']);
 	test.equal(cli.params.cmd1, 'test1');
 
-	cli.parse(['cli-test.js', 'test2']);
+	cli.parse(['node', 'cli-test.js', 'test2']);
 	test.equal(cli.params.cmd1, 'test2');
 	test.done();
 }
@@ -43,7 +43,7 @@ exports.testCommandBasicMultiple = function (test) {
 			null,
 			true
 		)
-		.parse(['cli-test.js', 'test1', 'testB']);
+		.parse(['node', 'cli-test.js', 'test1', 'testB']);
 	test.equal(cli.params.cmd1, 'test1');
 	test.equal(cli.params.cmd2, 'testB');
 	test.done();
@@ -64,7 +64,7 @@ exports.testCommandMissing = function (test) {
 		);
 
 	test.throws(function () {
-		cli.parse(['cli-test.js', 'test3']);
+		cli.parse(['node', 'cli-test.js', 'test3']);
 	});
 	test.done();
 }
@@ -89,12 +89,12 @@ exports.testCommandCallbacks = function (test) {
 				resultGroup = command;
 			}.bind(this)
 		)
-		.parse(['cli-test.js', 'test1']);
+		.parse(['node', 'cli-test.js', 'test1']);
 	test.equal(cli.params.cmd1, 'test1');
 	test.equal(resultCommand.name, 'test1');
 	test.equal(resultGroup.name, 'test1');
 
-	cli.parse(['cli-test.js', 'test2']);
+	cli.parse(['node', 'cli-test.js', 'test2']);
 	test.equal(cli.params.cmd1, 'test2');
 	test.equal(resultCommand, 'Hello World');
 	test.equal(resultGroup.name, 'test2');
@@ -115,7 +115,7 @@ exports.testExtraCommand = function(test) {
 		);
 
 	test.throws(function () {
-		cli.parse(['cli-test.js', 'test3']);
+		cli.parse(['node', 'cli-test.js', 'test3']);
 	});
 	test.done();
 }

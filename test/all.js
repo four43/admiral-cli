@@ -4,35 +4,35 @@ var Cli = require('./../lib/cli'),
 
 exports.testVerbosePlain = function (test) {
 	var cli = new Cli({helpOnNoArgs: false});
-	cli.parse(['test.js']);
+	cli.parse(['node', 'test.js']);
 	test.equal(cli.params.verbose, 0);
 	test.done();
 }
 
 exports.testVerboseV1 = function (test) {
 	var cli = new Cli();
-	cli.parse(['test.js', '-v']);
+	cli.parse(['node', 'test.js', '-v']);
 	test.equal(cli.params.verbose, 1);
 	test.done();
 }
 
 exports.testVerboseV2 = function (test) {
 	var cli = new Cli();
-	cli.parse(['test.js', '-vv']);
+	cli.parse(['node', 'test.js', '-vv']);
 	test.equal(cli.params.verbose, 2);
 	test.done();
 }
 
 exports.testVerboseV3 = function (test) {
 	var cli = new Cli();
-	cli.parse(['test.js', '-vvv']);
+	cli.parse(['node', 'test.js', '-vvv']);
 	test.equal(cli.params.verbose, 3);
 	test.done();
 }
 
 exports.testVerboseVLong = function (test) {
 	var cli = new Cli();
-	cli.parse(['test.js', '--verbose']);
+	cli.parse(['node', 'test.js', '--verbose']);
 	test.equal(cli.params.verbose, 1);
 	test.done();
 }
@@ -40,7 +40,7 @@ exports.testVerboseVLong = function (test) {
 exports.testVerboseOff = function (test) {
 	var cli = new Cli({verboseEnabled: false});
 	test.throws(function () {
-		cli.parse(['test.js', '-v']);
+		cli.parse(['node', 'test.js', '-v']);
 	});
 	test.done();
 }
@@ -54,7 +54,7 @@ exports.testMultiple1 = function (test) {
 		], null, true)
 		.flag('force', 'Force the command to execute', '-f', '--force')
 		.option('remote', 'The remote repo to push to', '-r', '--remote', 'string')
-		.parse(['test.js', 'push', '-f', '-r', 'origin']);
+		.parse(['node', 'test.js', 'push', '-f', '-r', 'origin']);
 	test.equal(cli.params.cmd, 'push');
 	test.equal(cli.params.force, true);
 	test.equal(cli.params.remote, 'origin');

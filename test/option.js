@@ -5,7 +5,7 @@ exports.testOptionBasic = function (test) {
 	var cli = new Cli();
 	cli
 		.option('test1', 'Just a test parameter', '-t', '--test1', 'string')
-		.parse(['cli-test.js', '-t', 'value1']);
+		.parse(['node', 'cli-test.js', '-t', 'value1']);
 	test.equal(cli.params.test1, 'value1');
 	test.done();
 }
@@ -14,7 +14,7 @@ exports.testOptionBasicValidateNumberType = function (test) {
 	var cli = new Cli();
 	cli
 		.option('test1', 'Just a test parameter', '-t', '--test1', 'number')
-		.parse(['cli-test.js', '-t', '123.5']);
+		.parse(['node', 'cli-test.js', '-t', '123.5']);
 	test.equal(cli.params.test1, 123.5);
 	test.done();
 }
@@ -23,7 +23,7 @@ exports.testOptionBasicMissingOkay = function (test) {
 	var cli = new Cli();
 	cli
 		.option('test1', 'Just a test parameter', '-t', '--test1', 'string')
-		.parse(['cli-test.js']);
+		.parse(['node', 'cli-test.js']);
 	test.strictEqual(cli.params.test1, undefined);
 	test.done();
 }
@@ -33,7 +33,7 @@ exports.testOptionBasicMissingFirstOkay = function (test) {
 	cli
 		.option('test1', 'Just a test parameter', '-t', '--test1', 'string')
 		.option('test2', 'Just another test parameter', '-u', '--test2', 'string')
-		.parse(['cli-test.js', '--test2', 'value2']);
+		.parse(['node', 'cli-test.js', '--test2', 'value2']);
 	test.equal(cli.params.test2, 'value2');
 	test.done();
 }
@@ -50,7 +50,7 @@ function setupMultiple() {
 exports.testOptionMultipleShorts = function (test) {
 	var cli = setupMultiple();
 
-	cli.parse(['cli-test.js', '-t', 'value1', '-u', 'hello']);
+	cli.parse(['node', 'cli-test.js', '-t', 'value1', '-u', 'hello']);
 	test.equal(cli.params.test1, 'value1');
 	test.equal(cli.params.test2, 'hello');
 	test.done();
@@ -59,7 +59,7 @@ exports.testOptionMultipleShorts = function (test) {
 exports.testOptionMultipleLongs = function (test) {
 	var cli = setupMultiple();
 
-	cli.parse(['cli-test.js', '--test1', 'value1', '--test2', 'hello']);
+	cli.parse(['node', 'cli-test.js', '--test1', 'value1', '--test2', 'hello']);
 	test.equal(cli.params.test1, 'value1');
 	test.equal(cli.params.test2, 'hello');
 	test.done();
@@ -68,7 +68,7 @@ exports.testOptionMultipleLongs = function (test) {
 exports.testOptionMultipleLongShort = function (test) {
 	var cli = setupMultiple();
 
-	cli.parse(['cli-test.js', '-t', 'value1', '--test2', 'hello']);
+	cli.parse(['node', 'cli-test.js', '-t', 'value1', '--test2', 'hello']);
 	test.equal(cli.params.test1, 'value1');
 	test.equal(cli.params.test2, 'hello');
 	test.done();
@@ -77,7 +77,7 @@ exports.testOptionMultipleLongShort = function (test) {
 exports.testOptionMultipleOutOfOrder = function (test) {
 	var cli = setupMultiple();
 	//Out of order
-	cli.parse(['cli-test.js', '-u', 'hello', '--test1', 'value1']);
+	cli.parse(['node', 'cli-test.js', '-u', 'hello', '--test1', 'value1']);
 	test.equal(cli.params.test1, 'value1');
 	test.equal(cli.params.test2, 'hello');
 	test.done();
@@ -87,11 +87,11 @@ exports.testOptionRequired = function (test) {
 	var cli = new Cli({helpOnNoArgs: false});
 	cli
 		.option('test1', 'Just a test parameter', '-t', '--test1', 'string', true)
-		.parse(['cli-test.js', '-t', 'value1']);
+		.parse(['node', 'cli-test.js', '-t', 'value1']);
 	test.equal(cli.params.test1, 'value1');
 
 	test.throws(function () {
-		cli.parse(['cli-test.js']);
+		cli.parse(['node', 'cli-test.js']);
 	}, CliError);
 	test.done();
 }
@@ -101,12 +101,12 @@ exports.testOptionReqiuredMultiple = function (test) {
 	cli
 		.option('test1', 'Just a test parameter', '-t', '--test1', 'string', true)
 		.option('test2', 'Just another test parameter', '-u', '--test2', 'string', true)
-		.parse(['cli-test.js', '-t', 'value1', '-u', 'hello']);
+		.parse(['node', 'cli-test.js', '-t', 'value1', '-u', 'hello']);
 	test.equal(cli.params.test1, 'value1');
 	test.equal(cli.params.test2, 'hello');
 
 	test.throws(function () {
-		cli.parse(['cli-test.js', '--test1', 'value1', 'hello']);
+		cli.parse(['node', 'cli-test.js', '--test1', 'value1', 'hello']);
 	});
 	test.done();
 }
@@ -116,18 +116,18 @@ exports.testOptionNumValues1 = function (test) {
 	cli
 		.option('test1', 'Just a test parameter', '-t', '--test1', 'string')
 		.option('test2', 'Test with a single', '-u', '--test2', 'string', 1)
-		.parse(['cli-test.js', '-u', 'value2']);
+		.parse(['node', 'cli-test.js', '-u', 'value2']);
 	test.equal(cli.params.test2, 'value2');
 
-	cli.parse(['cli-test.js', '-u', 'hello']);
+	cli.parse(['node', 'cli-test.js', '-u', 'hello']);
 	test.equal(cli.params.test2, 'hello');
 
 	test.throws(function () {
-		cli.parse(['cli-test.js', 'hello']);
+		cli.parse(['node', 'cli-test.js', 'hello']);
 	});
 
 	test.throws(function () {
-		cli.parse(['cli-test.js', '--test1', 'value1', 'hello']);
+		cli.parse(['node', 'cli-test.js', '--test1', 'value1', 'hello']);
 	});
 	test.done();
 }
@@ -136,7 +136,7 @@ exports.testOptionNumValuesFixed = function (test) {
 	var cli = new Cli();
 	cli
 		.option('test1', 'Just a test parameter', '-t', '--test1', 'string', 3)
-		.parse(['cli-test.js', '-t', 'value1', 'value2', 'value3']);
+		.parse(['node', 'cli-test.js', '-t', 'value1', 'value2', 'value3']);
 
 	var actual = ['value1', 'value2', 'value3'];
 	for (var i = 0; i < actual.length; i++) {
@@ -151,11 +151,11 @@ exports.testOptionNumValuesFixedTooFew = function (test) {
 		.option('test1', 'Just a test parameter', '-t', '--test1', 'string', 3);
 
 	test.throws(function () {
-		cli.parse(['cli-test.js', '-t', 'hello']);
+		cli.parse(['node', 'cli-test.js', '-t', 'hello']);
 	});
 
 	test.throws(function () {
-		cli.parse(['cli-test.js', '-t', 'hello', 'world']);
+		cli.parse(['node', 'cli-test.js', '-t', 'hello', 'world']);
 	});
 
 	test.done();
@@ -167,7 +167,7 @@ exports.testOptionNumValuesFixedTooMany = function (test) {
 		.option('test1', 'Just a test parameter', '-t', '--test1', 'string', 3);
 
 	test.throws(function () {
-		cli.parse(['cli-test.js', '-t', 'hello', 'world', 'too', 'many']);
+		cli.parse(['node', 'cli-test.js', '-t', 'hello', 'world', 'too', 'many']);
 	});
 	test.done();
 }
@@ -176,7 +176,7 @@ exports.testOptionNumValuesStar = function (test) {
 	var cli = new Cli();
 	cli
 		.option('test1', 'Just a test parameter', '-t', '--test1', 'string', '*')
-		.parse(['cli-test.js', '-t', 'hello', 'world', 'here', 'are', 'many']);
+		.parse(['node', 'cli-test.js', '-t', 'hello', 'world', 'here', 'are', 'many']);
 
 	var actual = ['hello', 'world', 'here', 'are', 'many'];
 	for (var i = 0; i < actual.length; i++) {
@@ -184,7 +184,7 @@ exports.testOptionNumValuesStar = function (test) {
 	}
 
 	cli.option('other', 'Just a test parameter', '-o', '--other', 'string')
-		.parse(['cli-test.js', '-t', 'hello', 'world', '-o', 'something']);
+		.parse(['node', 'cli-test.js', '-t', 'hello', 'world', '-o', 'something']);
 	var actual = ['hello', 'world'];
 	for (var i = 0; i < actual.length; i++) {
 		test.equal(cli.params.test1[i], actual[i]);
@@ -199,7 +199,7 @@ exports.testOptionNumValuesStarOtherOptions = function (test) {
 	cli
 		.option('otherOpt', 'Here is another option', '-a', '', 'string')
 		.option('test1', 'Just a test parameter', '-t', '--test1', 'string', '*')
-		.parse(['cli-test.js', '-t', 'hello', 'world', 'here', 'are', 'many', '-a', 'derp']);
+		.parse(['node', 'cli-test.js', '-t', 'hello', 'world', 'here', 'are', 'many', '-a', 'derp']);
 
 	var actual = ['hello', 'world', 'here', 'are', 'many'];
 	for (var i = 0; i < actual.length; i++) {
@@ -207,7 +207,7 @@ exports.testOptionNumValuesStarOtherOptions = function (test) {
 	}
 
 	cli.option('other', 'Just a test parameter', '-o', '--other', 'string')
-		.parse(['cli-test.js', '-t', 'hello', 'world', '-o', 'something']);
+		.parse(['node', 'cli-test.js', '-t', 'hello', 'world', '-o', 'something']);
 	var actual = ['hello', 'world'];
 	for (var i = 0; i < actual.length; i++) {
 		test.equal(cli.params.test1[i], actual[i]);
@@ -221,7 +221,7 @@ exports.testOptionNumValuesStarNoValue = function (test) {
 	var cli = new Cli();
 	cli
 		.option('test1', 'Just a test parameter', '-t', '--test1', 'string', '*')
-		.parse(['cli-test.js', '-t']);
+		.parse(['node', 'cli-test.js', '-t']);
 
 	test.equal(cli.params.test1, null);
 	test.done();
@@ -231,7 +231,7 @@ exports.testOptionNumValuesPlus = function (test) {
 	var cli = new Cli();
 	cli
 		.option('test1', 'Just a test parameter', '-t', '--test1', 'string', '+')
-		.parse(['cli-test.js', '-t', 'hello', 'world', 'here', 'are', 'many']);
+		.parse(['node', 'cli-test.js', '-t', 'hello', 'world', 'here', 'are', 'many']);
 
 	var actual = ['hello', 'world', 'here', 'are', 'many'];
 	for (var i = 0; i < actual.length; i++) {
@@ -246,7 +246,7 @@ exports.testOptionNumValuesPlusNoValue = function (test) {
 		.option('test1', 'Just a test parameter', '-t', '--test1', 'string', '+');
 
 	test.throws(function () {
-		cli.parse(['cli-test.js', '-t']);
+		cli.parse(['node', 'cli-test.js', '-t']);
 	});
 	test.done();
 }
