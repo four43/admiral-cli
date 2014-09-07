@@ -1,4 +1,4 @@
-![](/docs/images/logo-1.svg?raw=true "Admiral-Cli")
+![](https://cdn.rawgit.com/four43/admiral-cli/1dcce29a6a0b52d95f6522680ec3c2bfe50d52d5/docs/images/logo-1.svg "Admiral-Cli")
 
 Admiral-CLI
 ===========
