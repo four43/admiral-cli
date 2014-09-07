@@ -1,3 +1,5 @@
+![](/docs/images/logo-1.svg?raw=true "Admiral-Cli")
+
 Admiral-CLI
 ===========
 _A tool for Node.js to make applications easier to write, easier to use._
