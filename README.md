@@ -70,13 +70,14 @@ This library should be quite tested, make sure to check out the tests directory 
 ###CLI Options
 There are some options for configuring Admiral-Cli that may be passed to the constructor.
 
-| Option           | Type (default) | Description                                                                                                          |
-|------------------|----------------|----------------------------------------------------------------------------------------------------------------------|
-| `scriptName`     | String (null)  | The name of CLI script, this is automatically parsed, but use this as an override. Used in displaying documentation. |
-| `verboseEnabled` | Boolean (true) | Automatically parse `-v`, `-vv`, `-vvv`, and `--verbose`                                                             |
-| `helpEnabled`    | Boolean (true) | Enable help text output when passing `--help`                                                                        |
-| `helpOnNoArgs`   | Boolean (true) | Enable help text when no arguments are passed                                                                        |
-| `exitOnHelp`     | Boolean (true) | Exit after help is run.                                                                                              |
+| Option           | Type (default)  | Description                                                                                                          |
+|------------------|-----------------|----------------------------------------------------------------------------------------------------------------------|
+| `scriptName`     | String (null)   | The name of CLI script, this is automatically parsed, but use this as an override. Used in displaying documentation. |
+| `verboseEnabled` | Boolean (true)  | Automatically parse `-v`, `-vv`, `-vvv`, and `--verbose`                                                             |
+| `helpEnabled`    | Boolean (true)  | Enable help text output when passing `--help`                                                                        |
+| `helpOnNoArgs`   | Boolean (true)  | Enable help text when no arguments are passed                                                                        |
+| `exitOnHelp`     | Boolean (true)  | Exit after help is run.                                                                                              |
+| `allowExtraArgs` | Boolean (false) | If the script should allow extra arguments, throws InvalidInput error by default.                                    |
 
 Pass these options as an object to the constructor:
 
