@@ -53,8 +53,19 @@ exports.testMultiple1 = function (test) {
 			new Command('push', 'Push up to the remote'),
 			new Command('pull', 'Pull from the upstream')
 		], null, true)
-		.flag('force', 'Force the command to execute', '-f', '--force')
-		.option('remote', 'The remote repo to push to', '-r', '--remote', 'string')
+		.flag({
+            name: 'force',
+            description: 'Force the command to execute',
+            shortFlag: '-f',
+            longFlag: '--force'
+        })
+		.option({
+            name: 'remote',
+            description: 'The remote repo to push to',
+            shortFlag: '-r',
+            longFlag: '--remote',
+            type: 'string'
+        })
 		.parse(['node', 'test.js', 'push', '-f', '-r', 'origin']);
 	test.equal(cli.params.cmd, 'push');
 	test.equal(cli.params.force, true);
@@ -69,8 +80,19 @@ exports.testExtraError = function (test) {
 			new Command('push', 'Push up to the remote'),
 			new Command('pull', 'Pull from the upstream')
 		], null, true)
-		.flag('force', 'Force the command to execute', '-f', '--force')
-		.option('remote', 'The remote repo to push to', '-r', '--remote', 'string');
+		.flag({
+            name: 'force',
+            description: 'Force the command to execute',
+            shortFlag: '-f',
+            longFlag: '--force'
+        })
+        .option({
+            name: 'remote',
+            description: 'The remote repo to push to',
+            shortFlag: '-r',
+            longFlag: '--remote',
+            type: 'string'
+        });
 
 	test.throws(function() {
 		cli.parse(['node', 'test.js', 'push', '-f', '-r', 'origin', '-h', 'world']);
@@ -87,8 +109,19 @@ exports.testExtraOkay = function (test) {
 			new Command('push', 'Push up to the remote'),
 			new Command('pull', 'Pull from the upstream')
 		], null, true)
-		.flag('force', 'Force the command to execute', '-f', '--force')
-		.option('remote', 'The remote repo to push to', '-r', '--remote', 'string')
+        .flag({
+            name: 'force',
+            description: 'Force the command to execute',
+            shortFlag: '-f',
+            longFlag: '--force'
+        })
+        .option({
+            name: 'remote',
+            description: 'The remote repo to push to',
+            shortFlag: '-r',
+            longFlag: '--remote',
+            type: 'string'
+        })
 		.parse(['node', 'test.js', 'push', '-f', '-r', 'origin']);
 	test.equal(cli.params.cmd, 'push');
 	test.equal(cli.params.force, true);

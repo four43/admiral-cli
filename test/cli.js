@@ -2,126 +2,6 @@ var fs = require('fs'),
 	Cli = require('./../lib/cli'),
 	Command = require('./../lib/command');
 
-exports.testMergeSimple = function (test) {
-	var a = {
-		hello: 'world'
-	};
-	var b = {
-		foo: 'bar'
-	};
-	var expected = {
-		hello: 'world',
-		foo: 'bar'
-	};
-	var result = Cli._merge(a, b);
-	test.deepEqual(result, expected);
-	test.done();
-};
-
-exports.testMergeOverwrite = function (test) {
-	var a = {
-		hello: 'world'
-	};
-	var b = {
-		hello: 'bar'
-	};
-	var expected = {
-		hello: 'bar'
-	};
-	var result = Cli._merge(a, b);
-	test.deepEqual(result, expected);
-	test.done();
-};
-
-exports.testMergeDeepOverwrite = function (test) {
-	var a = {
-		option1: {
-			subOpt1: 'hello'
-		}
-	};
-	var b = {
-		option1: 'bar'
-	};
-	var expected = {
-		option1: 'bar'
-	};
-	var result = Cli._merge(a, b);
-	test.deepEqual(result, expected);
-	test.done();
-};
-
-exports.testMergeDeep = function (test) {
-	var a = {
-		option1: {
-			subOpt1: 'hello'
-		}
-	};
-	var b = {
-		option1: {
-			subOpt2: 'hi'
-		}
-	};
-	var expected = {
-		option1: {
-			subOpt1: 'hello',
-			subOpt2: 'hi'
-		}
-	};
-	var result = Cli._merge(a, b);
-	test.deepEqual(result, expected, 'testMergeDeep didn\'t work');
-	test.done();
-};
-
-exports.testMergeSuperDeep = function (test) {
-	var a = {
-		a: {
-			a1: 'hello',
-			a2: true
-		},
-		b: {
-			b1: {
-				b1a: false,
-				b1b: 'foo'
-			}
-		}
-	};
-	var b = {
-		a: {
-			a1: 'h1'
-		},
-		b: {
-			b1: {
-				b1a: true
-			}
-		},
-		c: {
-			c1: {
-				c1a: 'bar'
-			}
-		}
-	};
-	var expected = {
-		a: {
-			a1: 'h1',
-			a2: true
-		},
-		b: {
-			b1: {
-				b1a: true,
-				b1b: 'foo'
-			}
-		},
-		c: {
-			c1: {
-				c1a: 'bar'
-			}
-		}
-	};
-	var result = Cli._merge(a, b);
-	test.deepEqual(result, expected, 'testMergeDeep didn\'t work');
-	test.done();
-};
-
 exports.helpTextCommand = function (test) {
 	var cli = new Cli();
 	cli
@@ -157,9 +37,22 @@ exports.helpTextCommand = function (test) {
 exports.helpTextFlags = function (test) {
 	var cli = new Cli();
 	cli
-		.flag('flag1', 'Just a test opt', '-t', '--test1')
-		.flag('flag2', 'Just another test opt', '-a')
-		.flag('flag3', 'The last test opt', null, '--muchLongerFlagName');
+		.flag({
+            name: 'flag1',
+            description: 'Just a test opt',
+            shortFlag: '-t',
+            longFlag: '--test1'
+        })
+        .flag({
+            name: 'flag2',
+            description: 'Just another test opt',
+            shortFlag: '-a'
+        })
+        .flag({
+            name: 'flag3',
+            description: 'The last test opt',
+            longFlag: '--muchLongerFlagName'
+        });
 
 	hookStdout();
 	cli.parse(['node', 'cli-test.js', '--help']);
@@ -174,9 +67,22 @@ exports.helpTextFlags = function (test) {
 exports.helpTextOptions = function (test) {
 	var cli = new Cli();
 	cli
-		.option('option1', 'Just a test opt', '-t', '--test1')
-		.option('opt2', 'Just another test opt', '-a')
-		.option('optB', 'The last test opt', null, '--last');
+		.option({
+            name: 'option1',
+            description: 'Just a test opt',
+            shortFlag: '-t',
+            longFlag: '--test1'
+        })
+		.option({
+            name: 'opt2',
+            description: 'Just another test opt',
+            shortFlag: '-a'
+        })
+		.option({
+            name: 'optB',
+            description: 'The last test opt',
+            longFlag: '--last'
+        });
 
 	hookStdout();
 	cli.parse(['node', 'cli-test.js', '--help']);
