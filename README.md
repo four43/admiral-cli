@@ -10,7 +10,9 @@ We wanted to create a framework with less configuration but stronger validation.
 
 Master: [![Build Status](https://travis-ci.org/four43/admiral-cli.svg?branch=master)](https://travis-ci.org/four43/admiral-cli)
 
-Dependencies (only debug) ![Dependencies](https://david-dm.org/four43/admiral-cli.png)
+Development: [![Build Status](https://travis-ci.org/four43/admiral-cli.svg?branch=development)](https://travis-ci.org/four43/admiral-cli)
+
+Dependencies ![Dependencies](https://david-dm.org/four43/admiral-cli.png)
 
 ## Installation
 
