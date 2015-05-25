@@ -4,9 +4,13 @@ Admiral-CLI
 ===========
 _A tool for Node.js to make applications easier to write, easier to use._
 
-Admiral-CLI is a Command Line Framework (CLI) framework for Node.js. There are CLI frameworks available for Node.js already. Admiral
-has features like other CLI frameworks, but adds validation and some callbacks in key places to make apps easier to write.
-We wanted to create a framework with less configuration but stronger validation.
+Admiral-CLI is a Command Line Framework (CLI) framework for Node.js. There are other CLI frameworks available for Node.js 
+already, however Admiral adds validation and some callbacks in key places to make apps easier to write.
+We wanted to create a framework with less configuration but stronger validation. 
+
+Configuration should be easy to understand
+while CLI parameters are strictly validated and appropriate error messages are passed on to the user. A CLI is a user interface,
+let's treat it like one.
 
 Master: [![Build Status](https://travis-ci.org/four43/admiral-cli.svg?branch=master)](https://travis-ci.org/four43/admiral-cli)
 
@@ -36,18 +40,45 @@ var Cli = require('admiral-cli'),
 
 var cli = new Cli();
 cli
-	.commandGroup('cmd', 'Commands are single words, no - or --s, and are one of the following:', [
-			new CliCommand('add', 'The variable cmd will be set to add in this case', function(cli, command) { var do = 'stuff'; }),
-			new CliCommand('another', 'A user could also specify another')
+	.commandGroup({
+	    name: 'cmd', 
+	    description: 'Commands are single words, no - or --s, and are one of the following:', 
+	    commands: [
+			new CliCommand({
+			    name: 'add', 
+			    description: 'The variable cmd will be set to add in this case', 
+			    callback: function(cli, command) { var do = 'stuff'; 
+			}),
+			new CliCommand({
+			    name: 'another', 
+			    description: 'A user could also specify another'
+			})
 		],
-		function commandLevelCallback(cli, command) {
+		callback: function commandLevelCallback(cli, command) {
 			var theCommandObjThatWasChosen = command;
 		},
-		true //Required
+		required: true
 	)
-	.flag('flagName', 'Flags are single phrases, set as a boolean', '-f', '--flag')
-	.flag('nonPassed', 'Flags that aren\'t passed are set as false', '-n', '--non')
-	.option('optName', 'Options are two parts, a key and a user supplied value', '-o', '--option', 'string', true);
+	.flag({
+	    name: 'flagName', 
+	    description: 'Flags are single phrases, set as a boolean', 
+	    shortFlag: '-f', 
+	    longFlag: '--flag'
+    })
+	.flag({
+	    name: 'notPassed', 
+	    description: "Flags that aren't passed are set as false", 
+	    shortFlag: '-n', 
+	    longFlag: '--notPassed'
+    })
+	.option({
+	    name: 'optName', 
+	    description: 'Options are two parts, a key and a user supplied value', 
+	    shortFlag: '-o', 
+	    longFlag: '--option', 
+	    type: 'string', 
+	    length: '+'
+	});
 
 //Parse Cli arguments
 try {
@@ -67,7 +98,7 @@ catch(error) {
 //cli.params would be { 'cmd': 'add', 'flagName': true, 'nonPassed': false, 'optName': 'myExample' }
 ```
 
-This library should be quite tested, make sure to check out the tests directory for other examples.
+This library is well tested, make sure to check out the tests directory for other examples.
 
 ### CLI Options
 
@@ -113,7 +144,12 @@ A flag is a single phrase that is set as a boolean and can be passed in any orde
 
 For example: `rm -f` would use the `short` property of the flag, force. So force could be defined as:
 ```javascript
-cli.flag('force', 'Force removes things, for real', '-f', '--force');
+cli.flag({
+    name: 'force', 
+    description: 'Force removes things, for real', 
+    shortFlag: '-f', 
+    longFlag: '--force'
+});
 ```
 Would also allow `rm --force`
 
@@ -128,6 +164,12 @@ flags, but they require a value after them.
 
 ## Development
 
+Latest feelings:
+
+ * Verbose configuration is good. It takes a little longer to type, but it is so much more understandable later. After not
+ touching the cli params parsing stuff for an app after a while, the old way of doing arguments got confusing.
+ 
+ 
 ### Ideas from:
 
 * Chriso's great CLI framework (https://github.com/chriso/cli)
