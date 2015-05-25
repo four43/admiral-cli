@@ -1,43 +1,43 @@
 var fs = require('fs'),
-	Cli = require('./../lib/cli'),
-	Command = require('./../lib/command');
+    Cli = require('./../lib/cli'),
+    Command = require('./../lib/command');
 
 exports.helpTextCommand = function (test) {
-	var cli = new Cli();
-	cli
-		.commandGroup(
-			'cmd1',
-			'main route for the program', [
-				new Command('test1', 'The first command option'),
-				new Command('test2', 'The second command option')
-			],
-			null,
-			true
-		)
-		.commandGroup(
-			'anotherCmd',
-			'Secondary command, changes the output of the thing', [
-				new Command('t1', 'To test the first bit'),
-				new Command('t2', 'To test the second bit')
-			],
-			null,
-			true
-		);
-	hookStdout();
-	cli.parse(['node', 'cli-test.js']);
-	unhookStdout();
+    var cli = new Cli();
+    cli
+        .commandGroup({
+            name: 'cmd1',
+            description: 'main route for the program',
+            commands: [
+                new Command({name: 'test1', description: 'The first command option'}),
+                new Command({name: 'test2', description: 'The second command option'})
+            ],
+            required: true
+        })
+        .commandGroup({
+            name: 'anotherCmd',
+            description: 'Secondary command, changes the output of the thing',
+            commands: [
+                new Command({name: 't1', description: 'To test the first bit'}),
+                new Command({name: 't2', description: 'To test the second bit'})
+            ],
+            required: true
+        });
+    hookStdout();
+    cli.parse(['node', 'cli-test.js']);
+    unhookStdout();
 
-	console.log(stdOutBuffer);
-	var expected = fs.readFileSync(__dirname + '/outputs/helpTextCommand.txt', 'utf8');
-	test.equal(stdOutBuffer, expected);
+    console.log(stdOutBuffer);
+    var expected = fs.readFileSync(__dirname + '/outputs/helpTextCommand.txt', 'utf8');
+    test.equal(stdOutBuffer, expected);
 
-	test.done();
+    test.done();
 };
 
 exports.helpTextFlags = function (test) {
-	var cli = new Cli();
-	cli
-		.flag({
+    var cli = new Cli();
+    cli
+        .flag({
             name: 'flag1',
             description: 'Just a test opt',
             shortFlag: '-t',
@@ -54,44 +54,44 @@ exports.helpTextFlags = function (test) {
             longFlag: '--muchLongerFlagName'
         });
 
-	hookStdout();
-	cli.parse(['node', 'cli-test.js', '--help']);
-	unhookStdout();
+    hookStdout();
+    cli.parse(['node', 'cli-test.js', '--help']);
+    unhookStdout();
 
-	var expected = fs.readFileSync(__dirname + '/outputs/helpTextFlags.txt', 'utf8');
-	test.equal(stdOutBuffer, expected);
+    var expected = fs.readFileSync(__dirname + '/outputs/helpTextFlags.txt', 'utf8');
+    test.equal(stdOutBuffer, expected);
 
-	test.done();
+    test.done();
 };
 
 exports.helpTextOptions = function (test) {
-	var cli = new Cli();
-	cli
-		.option({
+    var cli = new Cli();
+    cli
+        .option({
             name: 'option1',
             description: 'Just a test opt',
             shortFlag: '-t',
             longFlag: '--test1'
         })
-		.option({
+        .option({
             name: 'opt2',
             description: 'Just another test opt',
             shortFlag: '-a'
         })
-		.option({
+        .option({
             name: 'optB',
             description: 'The last test opt',
             longFlag: '--last'
         });
 
-	hookStdout();
-	cli.parse(['node', 'cli-test.js', '--help']);
-	unhookStdout();
+    hookStdout();
+    cli.parse(['node', 'cli-test.js', '--help']);
+    unhookStdout();
 
-	var expected = fs.readFileSync(__dirname + '/outputs/helpTextOptions.txt', 'utf8');
-	test.equal(stdOutBuffer, expected);
+    var expected = fs.readFileSync(__dirname + '/outputs/helpTextOptions.txt', 'utf8');
+    test.equal(stdOutBuffer, expected);
 
-	test.done();
+    test.done();
 };
 
 
@@ -102,15 +102,15 @@ var oldWrite;
 var stdOutBuffer = '';
 
 function hookStdout() {
-	stdOutBuffer = '';
-	oldWrite = process.stdout.write;
-	process.stdout.write = function (str) {
-		stdOutBuffer += str;
-	}.bind(this);
+    stdOutBuffer = '';
+    oldWrite = process.stdout.write;
+    process.stdout.write = function (str) {
+        stdOutBuffer += str;
+    }.bind(this);
 }
 
 function unhookStdout() {
-	process.stdout.write = oldWrite;
+    process.stdout.write = oldWrite;
 }
 
 hookStdout();

@@ -49,10 +49,15 @@ exports.testVerboseOff = function (test) {
 exports.testMultiple1 = function (test) {
 	var cli = new Cli();
 	cli
-		.commandGroup('cmd', 'The primary command group', [
-			new Command('push', 'Push up to the remote'),
-			new Command('pull', 'Pull from the upstream')
-		], null, true)
+		.commandGroup({
+            name: 'cmd',
+            description: 'The primary command group',
+            commands: [
+                new Command({name: 'push', description: 'Push up to the remote'}),
+                new Command({name: 'pull', description: 'Pull from the upstream'})
+            ],
+            required: true
+        })
 		.flag({
             name: 'force',
             description: 'Force the command to execute',
@@ -76,10 +81,15 @@ exports.testMultiple1 = function (test) {
 exports.testExtraError = function (test) {
 	var cli = new Cli();
 	cli
-		.commandGroup('cmd', 'The primary command group', [
-			new Command('push', 'Push up to the remote'),
-			new Command('pull', 'Pull from the upstream')
-		], null, true)
+		.commandGroup({
+            name: 'cmd',
+            description: 'The primary command group',
+            commands: [
+                new Command({name: 'push', description: 'Push up to the remote'}),
+                new Command({name: 'pull', description: 'Pull from the upstream'})
+            ],
+            required: true
+        })
 		.flag({
             name: 'force',
             description: 'Force the command to execute',
@@ -105,10 +115,15 @@ exports.testExtraOkay = function (test) {
 		allowExtraArgs: true
 	});
 	cli
-		.commandGroup('cmd', 'The primary command group', [
-			new Command('push', 'Push up to the remote'),
-			new Command('pull', 'Pull from the upstream')
-		], null, true)
+		.commandGroup({
+            name: 'cmd',
+            description: 'The primary command group',
+            commands: [
+                new Command({name: 'push', description: 'Push up to the remote'}),
+                new Command({name: 'pull', description: 'Pull from the upstream'})
+            ],
+            required: true
+        })
         .flag({
             name: 'force',
             description: 'Force the command to execute',
