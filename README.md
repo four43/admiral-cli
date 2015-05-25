@@ -14,9 +14,11 @@ let's treat it like one.
 
 Master: [![Build Status](https://travis-ci.org/four43/admiral-cli.svg?branch=master)](https://travis-ci.org/four43/admiral-cli)
 
-Development: [![Build Status](https://travis-ci.org/four43/admiral-cli.svg?branch=development)](https://travis-ci.org/four43/admiral-cli)
+Dependencies: [![Dependency Status](https://david-dm.org/four43/admiral-cli.svg)](https://david-dm.org/four43/admiral-cli)
+[![devDependency Status](https://david-dm.org/four43/admiral-cli/dev-status.svg)](https://david-dm.org/four43/admiral-cli#info=devDependencies)
 
-Dependencies ![Dependencies](https://david-dm.org/four43/admiral-cli.png)
+
+Development: [![Build Status](https://travis-ci.org/four43/admiral-cli.svg?branch=development)](https://travis-ci.org/four43/admiral-cli)
 
 ## Installation
 
