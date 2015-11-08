@@ -1,11 +1,81 @@
 var assert = require('assert'),
 	Cli = require('./../lib/Cli'),
-	CliError = require('./../lib/error/abstract-error');
+	CliError = require('./../lib/error/config'),
+	InvalidInputError = require('./../lib/error/invalid-input');
 
 describe("Options", function () {
 
-	describe("Basic", function () {
-		it("Should parse single basic", function () {
+	describe("Config Issues", function () {
+
+		it("Should error because no options", function () {
+			var cli = new Cli();
+			assert.throws(function () {
+				cli
+					.option();
+			}, CliError);
+		});
+
+		it("Should error because no flags", function () {
+			var cli = new Cli();
+			assert.throws(function () {
+				cli
+					.option({
+						name: 'test1',
+						description: 'Just a test parameter',
+						type: 'string',
+						length: 0
+					});
+			}, CliError);
+		});
+
+		it("Should error because bad short flag", function () {
+			var cli = new Cli();
+			assert.throws(function () {
+				cli
+					.option({
+						name: 'test1',
+						description: 'Just a test parameter',
+						shortFlag: 't',
+						longFlag: '--test1',
+						type: 'string',
+						length: 0
+					});
+			}, CliError);
+		});
+
+		it("Should error because bad long flags", function () {
+			var cli = new Cli();
+			assert.throws(function () {
+				cli
+					.option({
+						name: 'test1',
+						description: 'Just a test parameter',
+						shortFlag: '-t',
+						longFlag: '-test1',
+						type: 'string',
+						length: 0
+					});
+			}, CliError);
+		});
+
+		it("Should fail on 0 length", function () {
+			var cli = new Cli();
+			assert.throws(function () {
+				cli
+					.option({
+						name: 'test1',
+						description: 'Just a test parameter',
+						shortFlag: '-t',
+						longFlag: '--test1',
+						type: 'string',
+						length: 0
+					});
+			}, CliError);
+		});
+	});
+
+	describe("Basic Parsing", function () {
+		it("Should parse string basic", function () {
 			var cli = new Cli();
 			cli
 				.option({
@@ -19,7 +89,21 @@ describe("Options", function () {
 			assert.equal(cli.params.test1, 'value1');
 		});
 
-		it("Should validate number type", function () {
+		it("Should parse custom basic", function () {
+			var cli = new Cli();
+			cli
+				.option({
+					name: 'test1',
+					description: 'Just a test parameter',
+					shortFlag: '-t',
+					longFlag: '--test1',
+					type: 'hippos'
+				})
+				.parse(['node', 'cli-test.js', '-t', 'value1']);
+			assert.equal(cli.params.test1, 'value1');
+		});
+
+		it("Should parse number type", function () {
 			var cli = new Cli();
 			cli
 				.option({
@@ -31,6 +115,50 @@ describe("Options", function () {
 				})
 				.parse(['node', 'cli-test.js', '-t', '123.5']);
 			assert.strictEqual(cli.params.test1, 123.5);
+		});
+
+		it("Should fail number type", function () {
+			var cli = new Cli();
+			cli
+				.option({
+					name: 'test1',
+					description: 'Just a test parameter',
+					shortFlag: '-t',
+					longFlag: '--test1',
+					type: 'number'
+				});
+			assert.throws(function () {
+				cli.parse(['node', 'cli-test.js', '-t', 'abc']);
+			}, InvalidInputError);
+		});
+
+		it("Should parse int type", function () {
+			var cli = new Cli();
+			cli
+				.option({
+					name: 'test1',
+					description: 'Just a test parameter',
+					shortFlag: '-t',
+					longFlag: '--test1',
+					type: 'int'
+				})
+				.parse(['node', 'cli-test.js', '-t', '123']);
+			assert.strictEqual(cli.params.test1, 123);
+		});
+
+		it("Should fail int type", function () {
+			var cli = new Cli();
+			cli
+				.option({
+					name: 'test1',
+					description: 'Just a test parameter',
+					shortFlag: '-t',
+					longFlag: '--test1',
+					type: 'int'
+				});
+			assert.throws(function () {
+				cli.parse(['node', 'cli-test.js', '-t', '123.4']);
+			}, InvalidInputError);
 		});
 
 		it("Should validate number type with multiple length", function () {
@@ -158,7 +286,7 @@ describe("Options", function () {
 
 			assert.throws(function () {
 				cli.parse(['node', 'cli-test.js', '--test1', 'value1', 'hello']);
-			});
+			}, InvalidInputError);
 		});
 
 	});
@@ -222,11 +350,11 @@ describe("Options", function () {
 
 			assert.throws(function () {
 				cli.parse(['node', 'cli-test.js', '-t', 'hello']);
-			});
+			}, InvalidInputError);
 
 			assert.throws(function () {
 				cli.parse(['node', 'cli-test.js', '-t', 'hello', 'world']);
-			});
+			}, InvalidInputError);
 		});
 
 		it("Should fail on too many", function () {
@@ -243,7 +371,7 @@ describe("Options", function () {
 
 			assert.throws(function () {
 				cli.parse(['node', 'cli-test.js', '-t', 'hello', 'world', 'too', 'many']);
-			});
+			}, InvalidInputError);
 		});
 
 		it("Should parse length -1, any length", function () {
@@ -373,7 +501,7 @@ describe("Options", function () {
 
 			assert.throws(function () {
 				cli.parse(['node', 'cli-test.js', '-t']);
-			});
+			}, InvalidInputError);
 		});
 	});
 });
