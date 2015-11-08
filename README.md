@@ -1,4 +1,4 @@
-<img src="https://cdn.rawgit.com/four43/admiral-cli/1dcce29a6a0b52d95f6522680ec3c2bfe50d52d5/docs/images/logo-1.svg" alt="Admiral-Cli" style="height:150px"/>
+<img src="https://cdn.rawgit.com/four43/admiral-cli/1dcce29a6a0b52d95f6522680ec3c2bfe50d52d5/docs/images/logo-1.svg" alt="Admiral-Cli" style="height:100px"/>
 
 Admiral-CLI
 ===========
@@ -37,64 +37,66 @@ Quick Example:
 ```javascript
 var Cli = require('admiral-cli'),
     CliCommand = require('admiral-cli').Command,
-	CliInvalidInputError = require('admiral-cli').InvalidInputError,
-	CliConfigError = require('admiral-cli').ConfigError;
+    CliInvalidInputError = require('admiral-cli').InvalidInputError,
+    CliConfigError = require('admiral-cli').ConfigError;
 
 var cli = new Cli();
 cli
-	.commandGroup({
-	    name: 'cmd', 
-	    description: 'Commands are single words, no - or --s, and are one of the following:', 
-	    commands: [
-			new CliCommand({
-			    name: 'add', 
-			    description: 'The variable cmd will be set to add in this case', 
-			    callback: function(cli, command) { var do = 'stuff'; 
-			}),
-			new CliCommand({
-			    name: 'another', 
-			    description: 'A user could also specify another'
-			})
-		],
-		callback: function commandLevelCallback(cli, command) {
-			var theCommandObjThatWasChosen = command;
-		},
-		required: true
-	)
-	.flag({
-	    name: 'flagName', 
-	    description: 'Flags are single phrases, set as a boolean', 
-	    shortFlag: '-f', 
-	    longFlag: '--flag'
+    .commandGroup({
+        name: 'cmd',
+        description: 'Commands are single words, no - or --s, and are one of the following:',
+        commands: [
+            new CliCommand({
+                name: 'add',
+                description: 'The variable cmd will be set to add in this case',
+                callback: function (cli, command) {
+                    var doSome = 'stuff';
+                }
+            }),
+            new CliCommand({
+                name: 'another',
+                description: 'A user could also specify another'
+            })
+        ],
+        callback: function commandLevelCallback(cli, command) {
+            var theCommandObjThatWasChosen = command;
+        },
+        required: true
+)
+    .flag({
+        name: 'flagName',
+        description: 'Flags are single phrases, set as a boolean',
+        shortFlag: '-f',
+        longFlag: '--flag'
     })
-	.flag({
-	    name: 'notPassed', 
-	    description: "Flags that aren't passed are set as false", 
-	    shortFlag: '-n', 
-	    longFlag: '--notPassed'
+    .flag({
+        name: 'notPassed',
+        description: "Flags that aren't passed are set as false",
+        shortFlag: '-n',
+        longFlag: '--notPassed'
     })
-	.option({
-	    name: 'optName', 
-	    description: 'Options are two parts, a key and a user supplied value', 
-	    shortFlag: '-o', 
-	    longFlag: '--option', 
-	    type: 'string', 
-	    length: '+'
-	});
+    .option({
+        name: 'optName',
+        description: 'Options are two parts, a key and a user supplied value',
+        shortFlag: '-o',
+        longFlag: '--option',
+        type: 'string',
+        length: '+'
+    });
 
 //Parse Cli arguments
 try {
-	cli.parse();
+    cli.parse();
 }
-catch(error) {
-	console.error(error);
-	if(error instanceof CliInvalidInputError) {
-		process.exit(2);
-	}
-	else if(error instanceof CliConfigError) {
-		console.error('Doh, configured something wrong.', error);
-		process.exit(1);
-	}
+catch (error) {
+    console.error(error);
+    if (error instanceof CliInvalidInputError) {
+        process.exit(2);
+    }
+    else if (error instanceof CliConfigError) {
+        console.error('Doh, configured something wrong.', error);
+        process.exit(1);
+    }
 }
 //Could call script with cliExample.js add --option myExample -f
 //cli.params would be { 'cmd': 'add', 'flagName': true, 'nonPassed': false, 'optName': 'myExample' }
