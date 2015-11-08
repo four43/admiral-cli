@@ -28,6 +28,6 @@
   },
   "devDependencies": {
     "assert": ">=1.0",
-    "nodeunit": ">=0.8"
+    "nodeunit": "^0.9.1"
   }
 }
