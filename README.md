@@ -12,7 +12,9 @@ Configuration should be easy to understand
 while CLI parameters are strictly validated and appropriate error messages are passed on to the user. A CLI is a user interface,
 let's treat it like one.
 
-Master: [![Build Status](https://travis-ci.org/four43/admiral-cli.svg?branch=master)](https://travis-ci.org/four43/admiral-cli)
+Master: 
+[![Build Status](https://travis-ci.org/four43/admiral-cli.svg?branch=master)](https://travis-ci.org/four43/admiral-cli)
+[![Coverage Status](https://coveralls.io/repos/four43/admiral-cli/badge.svg?branch=master&service=github)](https://coveralls.io/github/four43/admiral-cli?branch=master)
 
 Dependencies: [![Dependency Status](https://david-dm.org/four43/admiral-cli.svg)](https://david-dm.org/four43/admiral-cli)
 [![devDependency Status](https://david-dm.org/four43/admiral-cli/dev-status.svg)](https://david-dm.org/four43/admiral-cli#info=devDependencies)
