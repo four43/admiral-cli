@@ -120,21 +120,22 @@ describe("Integration", function () {
                     commands: [
                         new Command({name: 'push', description: 'Push up to the remote'}),
                         new Command({name: 'pull', description: 'Pull from the upstream'})
-                    ],
-                    required: true
+                    ]
                 })
                 .flag({
                     name: 'force',
                     description: 'Force the command to execute',
                     shortFlag: '-f',
-                    longFlag: '--force'
+                    longFlag: '--force',
+                    required: false
                 })
                 .option({
                     name: 'remote',
                     description: 'The remote repo to push to',
                     shortFlag: '-r',
                     longFlag: '--remote',
-                    type: 'string'
+                    type: 'string',
+                    required: false
                 })
                 .parse(['node', 'test.js', 'push', '-f', '-r', 'origin']);
             assert.equal(cli.params.cmd, 'push');

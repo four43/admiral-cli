@@ -4,7 +4,6 @@ before_install:
 node_js:
   - 5.0
   - 4.1
-  - 4.0
   - 0.12
   - iojs
 after_success:
