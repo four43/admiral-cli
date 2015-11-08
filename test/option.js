@@ -1,4 +1,4 @@
-var Cli = require('./../lib/cli'),
+var Cli = require('./../lib/Cli'),
 	CliError = require('./../lib/error/abstract-error');
 
 exports.testOptionBasic = function (test) {

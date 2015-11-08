@@ -1,6 +1,6 @@
 #!/usr/bin/node
-var Cli = require('./lib/cli'),
-	CliCommand = require('./lib/command'),
+var Cli = require('./lib/Cli'),
+	CliCommand = require('./lib/Command'),
 	CliInvalidInputError = require('./lib/error/invalid-input'),
 	CliConfigError = require('./lib/error/config');
 

@@ -1,7 +1,7 @@
 var fs = require('fs'),
-    helpers = require('./../lib/helpers'),
-    Cli = require('./../lib/cli'),
-    Command = require('./../lib/command');
+    helpers = require('./../lib/Helpers'),
+    Cli = require('./../lib/Cli'),
+    Command = require('./../lib/Command');
 
 exports.testMergeSimple = function (test) {
     var a = {

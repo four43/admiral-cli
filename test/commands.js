@@ -1,6 +1,6 @@
-var Cli = require('./../lib/cli'),
+var Cli = require('./../lib/Cli'),
 	CliError = require('./../lib/error/abstract-error'),
-	Command = require('./../lib/command');
+	Command = require('./../lib/Command');
 
 exports.testCommandBasic = function (test) {
 	var cli = new Cli();

@@ -1,5 +1,5 @@
-var Cli = require('./../lib/cli'),
-	Command = require('./../lib/command'),
+var Cli = require('./../lib/Cli'),
+	Command = require('./../lib/Command'),
 	CliError = require('./../lib/error/abstract-error'),
 	CliInvalidInputError = require('./../lib/error/invalid-input');
 

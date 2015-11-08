@@ -1,6 +1,6 @@
 var fs = require('fs'),
-    Cli = require('./../lib/cli'),
-    Command = require('./../lib/command');
+    Cli = require('./../lib/Cli'),
+    Command = require('./../lib/Command');
 
 //exports.helpTextCommand = function (test) {
 //    var cli = new Cli();
