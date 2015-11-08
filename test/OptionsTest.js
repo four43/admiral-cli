@@ -30,7 +30,23 @@ describe("Options", function () {
 					type: 'number'
 				})
 				.parse(['node', 'cli-test.js', '-t', '123.5']);
-			assert.equal(cli.params.test1, 123.5);
+			assert.strictEqual(cli.params.test1, 123.5);
+		});
+
+		it("Should validate number type with multiple length", function () {
+			var cli = new Cli();
+			cli
+				.option({
+					name: 'test1',
+					description: 'Just a test parameter',
+					shortFlag: '-t',
+					longFlag: '--test1',
+					type: 'number',
+					length: 2
+				})
+				.parse(['node', 'cli-test.js', '-t', '123.5', '54.321']);
+			assert.strictEqual(cli.params.test1[0], 123.5);
+			assert.strictEqual(cli.params.test1[1], 54.321);
 		});
 
 		it("Should allow missing options", function () {
@@ -55,7 +71,7 @@ describe("Options", function () {
 					description: 'Just a test parameter',
 					shortFlag: '-t',
 					longFlag: '--test1',
-					type: 'number',
+					type: 'string',
 					required: false
 				})
 				.option({
@@ -63,7 +79,7 @@ describe("Options", function () {
 					description: 'Just a test parameter',
 					shortFlag: '-u',
 					longFlag: '--test2',
-					type: 'number'
+					type: 'string'
 				})
 				.parse(['node', 'cli-test.js', '--test2', 'value2']);
 			assert.equal(cli.params.test2, 'value2');
@@ -167,6 +183,31 @@ describe("Options", function () {
 			}
 		});
 
+		it("Should not error when not required multiple length", function () {
+			var cli = new Cli();
+			cli
+				.option({
+					name: 'test1',
+					description: 'Just a test parameter',
+					shortFlag: '-t',
+					longFlag: '--test1',
+					type: 'string',
+					length: 3,
+					required: false
+				})
+				.option({
+					name: 'test2',
+					description: 'Just another test parameter',
+					shortFlag: '-u',
+					longFlag: '--test2',
+					type: 'string',
+					length: 1
+				})
+				.parse(['node', 'cli-test.js', '--test2', 'hello']);
+
+			assert.equal(cli.params.test2, 'hello');
+		});
+
 		it("Should fail on too few", function () {
 			var cli = new Cli();
 			cli
@@ -205,7 +246,7 @@ describe("Options", function () {
 			});
 		});
 
-		it("Should parse star, any length", function () {
+		it("Should parse length -1, any length", function () {
 			var cli = new Cli(),
 				i,
 				actual;
@@ -217,7 +258,7 @@ describe("Options", function () {
 					shortFlag: '-t',
 					longFlag: '--test1',
 					type: 'string',
-					length: '*'
+					length: -1
 				})
 				.parse(['node', 'cli-test.js', '-t', 'hello', 'world', 'here', 'are', 'many']);
 
@@ -225,55 +266,52 @@ describe("Options", function () {
 			for (i = 0; i < actual.length; i++) {
 				assert.equal(cli.params.test1[i], actual[i]);
 			}
-
-			cli
-				.option({
-					name: 'other',
-					description: 'Just a test another parameter',
-					shortFlag: '-o',
-					longFlag: '--other',
-					type: 'string'
-				})
-				.parse(['node', 'cli-test.js', '-t', 'hello', 'world', '-o', 'something']);
-			actual = ['hello', 'world'];
-			for (i = 0; i < actual.length; i++) {
-				assert.equal(cli.params.test1[i], actual[i]);
-			}
-			assert.equal(cli.params.other, 'something');
 		});
 
-		it("Should parse star, any length, with other options", function () {
+		it("Should parse length -1, any length not required", function () {
 			var cli = new Cli(),
 				i,
 				actual;
 
 			cli
 				.option({
-					name: 'otherOpt',
-					description: 'Here is another option',
-					shortFlag: '-a',
+					name: 'test1',
+					description: 'Just a test parameter',
+					shortFlag: '-t',
+					longFlag: '--test1',
 					type: 'string',
+					length: -1,
 					required: false
 				})
+				.option({
+					name: 'test2',
+					description: 'Just another test parameter',
+					shortFlag: '-u',
+					longFlag: '--test2',
+					type: 'string',
+					length: 1
+				})
+				.parse(['node', 'cli-test.js', '-u', 'hello']);
+
+			assert.equal(cli.params.test2, 'hello');
+		});
+
+		it("Should parse length -1, any length, with other options", function () {
+			var cli = new Cli(),
+				i,
+				actual;
+			cli
 				.option({
 					name: 'test1',
 					description: 'Just a test parameter',
 					shortFlag: '-t',
 					longFlag: '--test1',
 					type: 'string',
-					length: '*'
+					length: -1
 				})
-				.parse(['node', 'cli-test.js', '-t', 'hello', 'world', 'here', 'are', 'many', '-a', 'derp']);
-
-			actual = ['hello', 'world', 'here', 'are', 'many'];
-			for (i = 0; i < actual.length; i++) {
-				assert.equal(cli.params.test1[i], actual[i]);
-			}
-
-			cli
 				.option({
 					name: 'other',
-					description: 'Just a test parameter',
+					description: 'Just a test another parameter',
 					shortFlag: '-o',
 					longFlag: '--other',
 					type: 'string'
@@ -302,7 +340,7 @@ describe("Options", function () {
 			assert.equal(cli.params.test1, null);
 		});
 
-		it("Should parse +, at least one", function () {
+		it("Should parse at least one", function () {
 			var cli = new Cli();
 			cli
 				.option({
@@ -311,7 +349,7 @@ describe("Options", function () {
 					shortFlag: '-t',
 					longFlag: '--test1',
 					type: 'string',
-					length: '+'
+					length: -1
 				})
 				.parse(['node', 'cli-test.js', '-t', 'hello', 'world', 'here', 'are', 'many']);
 
@@ -321,7 +359,7 @@ describe("Options", function () {
 			}
 		});
 
-		it("Should parse + without any values", function () {
+		it("Should error when required, any length, but passed none", function () {
 			var cli = new Cli();
 			cli
 				.option({
@@ -330,7 +368,7 @@ describe("Options", function () {
 					shortFlag: '-t',
 					longFlag: '--test1',
 					type: 'string',
-					length: '+'
+					length: -1
 				});
 
 			assert.throws(function () {
@@ -348,14 +386,14 @@ function setupMultiple() {
 			description: 'Just a test parameter',
 			shortFlag: '-t',
 			longFlag: '--test1',
-			type: 'number'
+			type: 'string'
 		})
 		.option({
 			name: 'test2',
 			description: 'Just a test parameter',
 			shortFlag: '-u',
 			longFlag: '--test2',
-			type: 'number'
+			type: 'string'
 		});
 	return cli;
 }
