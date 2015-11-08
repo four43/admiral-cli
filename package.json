@@ -4,7 +4,9 @@
   "description": "A Command Line Framework (CLI) framework for Node.js. Admiral has features like other CLI frameworks, but adds validation and some callbacks in key places. Less configuration, stronger validation.",
   "main": "main",
   "scripts": {
-    "test": "nodeunit test"
+    "test": "mocha",
+    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
+    "coveralls": "npm run coverage && coveralls < coverage/lcov.info"
   },
   "repository": {
     "type": "git",
@@ -28,6 +30,6 @@
   },
   "devDependencies": {
     "assert": ">=1.0",
-    "nodeunit": "^0.9.1"
+    "mocha": "^2.3.3"
   }
 }
