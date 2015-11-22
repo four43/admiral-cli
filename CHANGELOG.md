@@ -1,3 +1,10 @@
+# v0.7.0
+
+**BREAKING CHANGES**
+
+* Added EnvVars
+* Options: Changed how lenghts worked, add required to make it less confusing.
+
 # v0.4.0
 
 **BREAKING CHANGES**
