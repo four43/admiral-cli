@@ -22,8 +22,7 @@ describe("Options", function () {
 					.option({
 						name: 'test1',
 						description: 'Just a test parameter',
-						type: 'string',
-						length: 0
+						type: 'string'
 					});
 			}, CliError);
 		});
@@ -37,8 +36,7 @@ describe("Options", function () {
 						description: 'Just a test parameter',
 						shortFlag: 't',
 						longFlag: '--test1',
-						type: 'string',
-						length: 0
+						type: 'string'
 					});
 			}, CliError);
 		});
@@ -52,8 +50,7 @@ describe("Options", function () {
 						description: 'Just a test parameter',
 						shortFlag: '-t',
 						longFlag: '-test1',
-						type: 'string',
-						length: 0
+						type: 'string'
 					});
 			}, CliError);
 		});
