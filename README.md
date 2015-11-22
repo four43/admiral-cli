@@ -32,6 +32,8 @@ Available via npm.
 npm install --save admiral-cli
 ```
 
+Tested on NodeJS: `v5`, `v4.1`, `v0.12` and `iojs`. See .travis.yml for more info.
+
 ## Usage
 
 Quick Example:
