@@ -64,7 +64,7 @@ cli
             var theCommandObjThatWasChosen = command;
         },
         required: true
-)
+    })
     .flag({
         name: 'flagName',
         description: 'Flags are single phrases, set as a boolean',
@@ -83,7 +83,8 @@ cli
         shortFlag: '-o',
         longFlag: '--option',
         type: 'string',
-        length: '+'
+        length: 1
+        required: true
     });
 
 //Parse Cli arguments
