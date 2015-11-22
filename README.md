@@ -32,6 +32,8 @@ Available via npm.
 npm install --save admiral-cli
 ```
 
+Tested on NodeJS: `v5`, `v4.1`, `v0.12` and `iojs`. See .travis.yml for more info.
+
 ## Usage
 
 Quick Example:
@@ -139,12 +141,30 @@ Currently ConfigError errors will be thrown if something is wrong when creating 
 will be thrown if a parameter isn't passed and is required, also if there is an extra parameter that is passed but wasn't
 configured.
 
-### Command Group
-A container that holds commands. One command can be chosen by the user at a time, per Command Group. Multiple
+### Commands and Command Groups
+A Command Group is a collection of possible Commands. One command can be chosen by the user at a time, per Command Group. Multiple
 command groups can be added at a time, but order matters.
 
 For example: `git push origin` One command group would be added
-for `push` (and other top level commands), then another command group added for `origin`.
+for `push` (and other top level commands like `commit` and `pull`), then another command group added for the remotes `origin`, `home-server`, etc.
+
+#### Command Group Options:
+
+| Option        | Type (default)  | Description                                                                                               |
+|---------------|-----------------|-----------------------------------------------------------------------------------------------------------|
+| `name`        | String (null)   | Name of the Command Group, used for validation messages                                                   |
+| `description` | String (null)   | Description of this Command Group, used for help text.                                                    |
+| `commands`    | Commands[] ([]) | The set of possible Commands                                                                              |
+| `required`    | Boolean (true)  | This command is required, one of the Commands must be passed.                                             |
+| `callback`    | Function (null) | A callback to call when a command from this command group is parsed, function([Command Group], [Command]) |
+
+#### Command Options:
+
+| Option        | Type (default)  | Description                                                                                               |
+|---------------|-----------------|-----------------------------------------------------------------------------------------------------------|
+| `name`        | String (null)   | Name of the Command, used when parsing, so `push` or `commit` from the example above.                     |
+| `description` | String (null)   | Description of this Command, used for help text.                                                          |
+| `callback`    | Function (null) | A callback to call when a command from this command group is parsed, function([Command Group], [Command]) |
 
 ### Flag
 A flag is a single phrase that is set as a boolean and can be passed in any order. Flags that aren't passed are set as false.
@@ -163,9 +183,45 @@ Would also allow `rm --force`
 Flags can be combined, like `rm -rf` and options `force` (defined with '-f') and `recursive` (defined with -r) would
 both be true.
 
+#### Flag Options:
+
+| Option        | Type (default)  | Description                                                                              |
+|---------------|-----------------|------------------------------------------------------------------------------------------|
+| `name`        | String (null)   | Name of the Flag, used for invalid messages and help text.                               |
+| `description` | String (null)   | Description of this Flag, used for help text.                                            |
+| `shortFlag`   | String (null)   | A string starting with "-" and a single character, the shortened flag a user may pass.   |
+| `longFlag`    | String (null)   | A string starting with "--" and any number of characters, the long flag a user may pass. |
+| `value`       | any (true)      | The value to assign the resulting output when the flag is passed, defaults to `true`     |
+
+
 ### Option
 Options are key/value pairs, e.g. -n myName. They can be in any order. The have both a short and long version, much like
 flags, but they require a value after them.
+
+#### Option Options (ha):
+
+| Option        | Type (default)    | Description                                                                              |
+|---------------|-------------------|------------------------------------------------------------------------------------------|
+| `name`        | String (null)     | Name of the Option, used for invalid messages and help text. |
+| `description` | String (null)     | Description of this Option, used for help text. |
+| `shortFlag`   | String (null)     | A string starting with "-" and a single character, the shortened flag a user may pass denoting the next value will be the value(s) of this option.   |
+| `longFlag`    | String (null)     | A string starting with "--" and any number of characters, the long flag a user may pass denoting the next value will be the value(s) of this option. |
+| `type `       | String ("string") | The type of this option, `int` and `float`/`double`s will be parsed accordingly and error if they do not match the provided type.    |
+| `length`      | Integer (1)       | How many space separated arguments are required. -1 is any number (will parse until another flag or command is hit, will return an array) , 1 is a single value, >1 is a fixed number (will return an array)    |
+| `required`    | Boolean (true)    | This Option is required, this Option must be provided. |
+
+### EnvVar
+For parsing Environment Variables. Will verify an environment variable with a certain name was provided and will parse/validate it to
+the desired type.
+
+#### EnvVar Options:
+
+| Option        | Type (default)    | Description                                                                              |
+|---------------|-------------------|------------------------------------------------------------------------------------------|
+| `name`        | String (null)     | Name of the EnvVar, the key of the element in process.env, "HELLO_WORLD" for example. |
+| `description` | String (null)     | Description of this EnvVar, used for help text. |
+| `type `       | String ("string") | The type of this EnvVar, `int` and `float`/`double`s will be parsed accordingly and error if they do not match the provided type.    |
+| `required`    | Boolean (true)    | This EnvVar is required, this EnvVar must be provided. |
 
 ---
 

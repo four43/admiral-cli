@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    helpers = require('./../lib/Helpers'),
+    helpers = require('./../lib/helpers'),
     Cli = require('./../lib/Cli'),
     Command = require('./../lib/Command');
 
