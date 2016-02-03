@@ -209,6 +209,7 @@ flags, but they require a value after them.
 | `type `       | String ("string") | The type of this option, `int` and `float`/`double`s will be parsed accordingly and error if they do not match the provided type.    |
 | `length`      | Integer (1)       | How many space separated arguments are required. -1 is any number (will parse until another flag or command is hit, will return an array) , 1 is a single value, >1 is a fixed number (will return an array)    |
 | `required`    | Boolean (true)    | This Option is required, this Option must be provided. |
+| `default`     | * (undefined)   | If this Option isn't required, a default value can be set that will be used in place of a user provided value. |
 
 ### EnvVar
 For parsing Environment Variables. Will verify an environment variable with a certain name was provided and will parse/validate it to
