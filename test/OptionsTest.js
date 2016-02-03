@@ -209,6 +209,31 @@ describe("Options", function () {
 				.parse(['node', 'cli-test.js', '--test2', 'value2']);
 			assert.equal(cli.params.test2, 'value2');
 		});
+
+		it("Should apply default value", function () {
+			var cli = new Cli();
+			cli
+				.option({
+					name: 'test1',
+					description: 'Just a test parameter',
+					shortFlag: '-t',
+					longFlag: '--test1',
+					type: 'string',
+					required: false,
+					default: 'foo'
+				})
+				.option({
+					name: 'test2',
+					description: 'Just a test parameter',
+					shortFlag: '-u',
+					longFlag: '--test2',
+					type: 'string',
+					default: 'bar'
+				})
+				.parse(['node', 'cli-test.js', '--test2', 'value2']);
+			assert.equal(cli.params.test1, 'foo');
+			assert.equal(cli.params.test2, 'value2');
+		});
 	});
 
 	describe("Multiple", function () {

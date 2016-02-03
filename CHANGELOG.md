@@ -1,9 +1,13 @@
+# v0.8.0
+
+* Added Options `default` property, can now specifiy default for an Option.
+
 # v0.7.0
 
 **BREAKING CHANGES**
 
 * Added EnvVars
-* Options: Changed how lenghts worked, add required to make it less confusing.
+* Options: Changed how lengths worked, add required to make it less confusing.
 
 # v0.4.0
 
