@@ -1,6 +1,7 @@
 # v0.8.0
 
-* Added Options `default` property, can now specifiy default for an Option.
+* Added Options `default` property, can now specify default for an Option.
+* Added `path` type to Options, now resolves paths.
 
 # v0.7.0
 

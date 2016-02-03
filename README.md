@@ -206,7 +206,7 @@ flags, but they require a value after them.
 | `description` | String (null)     | Description of this Option, used for help text. |
 | `shortFlag`   | String (null)     | A string starting with "-" and a single character, the shortened flag a user may pass denoting the next value will be the value(s) of this option.   |
 | `longFlag`    | String (null)     | A string starting with "--" and any number of characters, the long flag a user may pass denoting the next value will be the value(s) of this option. |
-| `type `       | String ("string") | The type of this option, `int` and `float`/`double`s will be parsed accordingly and error if they do not match the provided type.    |
+| `type `       | String ("string") | The type of this option, `int` and `float`/`double`s will be parsed accordingly and error if they do not match the provided type.  `path`s will be turned into absolute paths using the cwd.  |
 | `length`      | Integer (1)       | How many space separated arguments are required. -1 is any number (will parse until another flag or command is hit, will return an array) , 1 is a single value, >1 is a fixed number (will return an array)    |
 | `required`    | Boolean (true)    | This Option is required, this Option must be provided. |
 | `default`     | * (undefined)   | If this Option isn't required, a default value can be set that will be used in place of a user provided value. |

@@ -1,7 +1,8 @@
 var assert = require('assert'),
 	Cli = require('./../lib/Cli'),
 	CliError = require('./../lib/error/config'),
-	InvalidInputError = require('./../lib/error/invalid-input');
+	InvalidInputError = require('./../lib/error/invalid-input'),
+	path = require('path');
 
 describe("Options", function () {
 
@@ -158,6 +159,34 @@ describe("Options", function () {
 			}, InvalidInputError);
 		});
 
+		it("Should parse path type", function () {
+			var cli = new Cli();
+			cli
+				.option({
+					name: 'test1',
+					description: 'Just a test parameter',
+					shortFlag: '-t',
+					longFlag: '--test1',
+					type: 'path'
+				})
+				.parse(['node', 'cli-test.js', '-t', '../hello/world']);
+			assert.strictEqual(cli.params.test1, path.resolve(process.cwd(), '..', 'hello', 'world'));
+		});
+
+		it("Should parse path type absolute", function () {
+			var cli = new Cli();
+			cli
+				.option({
+					name: 'test1',
+					description: 'Just a test parameter',
+					shortFlag: '-t',
+					longFlag: '--test1',
+					type: 'path'
+				})
+				.parse(['node', 'cli-test.js', '-t', '/var/www/hello/world']);
+			assert.strictEqual(cli.params.test1, '/' + path.join('var', 'www', 'hello', 'world'));
+		});
+
 		it("Should validate number type with multiple length", function () {
 			var cli = new Cli();
 			cli
@@ -312,6 +341,7 @@ describe("Options", function () {
 		});
 
 	});
+
 	describe("Length", function () {
 
 		it("Should parse with fixed length", function () {
