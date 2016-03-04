@@ -1,3 +1,10 @@
+# v0.9.0
+
+* Fixed help exiting - bad exitOnHelp default.
+* Fixed default not being applied correctly when no arguments were passed to the cli.
+
+**NOTE:** This default was documented correctly, but not applied correctly. In rare cases this was a breaking change.
+
 # v0.8.0
 
 * Added Options `default` property, can now specify default for an Option.
