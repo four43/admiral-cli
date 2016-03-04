@@ -5,6 +5,19 @@ var assert = require('assert'),
 	path = require('path');
 
 describe("Options", function () {
+	var processExitOrig, exitCode;
+
+	beforeEach(function() {
+		processExitOrig = process.exit;
+		process.exit = function(code) { exitCode = code; }
+	});
+
+	afterEach(function() {
+	  exitCode = null;
+		process.exit = processExitOrig;
+	});
+
+
 
 	describe("Config Issues", function () {
 
@@ -263,6 +276,22 @@ describe("Options", function () {
 			assert.equal(cli.params.test1, 'foo');
 			assert.equal(cli.params.test2, 'value2');
 		});
+
+		it("Should apply default value, with no cli args", function() {
+		  var cli = new Cli()
+				.option({
+					name: 'foo',
+					description: 'foo (defaults to bar)',
+					shortFlag: '-f',
+					longFlag: '--foo',
+					required: false,
+					default: 'bar'
+				});
+
+			cli.parse(['node', 'cli-test.js']);
+
+			assert.strictEqual(cli.params.foo, 'bar');
+		});
 	});
 
 	describe("Multiple", function () {
@@ -310,6 +339,21 @@ describe("Options", function () {
 			assert.throws(function () {
 				cli.parse(['node', 'cli-test.js']);
 			}, CliError);
+		});
+
+		it('Should not fail on option required, when helpOnNoArgs=true', function() {
+			var cli = new Cli({helpOnNoArgs: true})
+				.option({
+					name: 'test1',
+					description: 'Just a test parameter',
+					shortFlag: '-t',
+					longFlag: '--test1',
+					type: 'string',
+					length: 1
+				});
+
+			cli.parse(['node', 'cli-test.js']);
+			assert.strictEqual(exitCode, 3);
 		});
 
 		it("Should handle multiple required", function () {
