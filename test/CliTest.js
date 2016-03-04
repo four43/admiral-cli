@@ -4,6 +4,18 @@ var assert = require('assert'),
 	Command = require('./../lib/Command');
 
 describe("Cli", function () {
+	var processExitOrig, exitCode = null;
+
+	beforeEach(function() {
+		processExitOrig = process.exit;
+		process.exit = function(code) { exitCode = code; }
+	});
+
+	afterEach(function() {
+		exitCode = null;
+		process.exit = processExitOrig;
+	});
+
 	describe("Help Text", function () {
 		it("Should display help text by default", function () {
 			var cli = new Cli();
@@ -89,6 +101,51 @@ describe("Cli", function () {
 
 			var expected = fs.readFileSync(__dirname + '/outputs/helpTextOptions.txt', 'utf8');
 			assert.equal(stdOutBuffer, expected);
+		});
+
+		it("Should exit on help (no args)", function() {
+			var cli = new Cli()
+				.option({
+					name: 'foo',
+					description: 'foo (defaults to bar)',
+					shortFlag: '-f',
+					longFlag: '--foo',
+					required: true
+				});
+
+			cli.parse(['node', 'cli-test.js']);
+
+			assert.strictEqual(exitCode, 3);
+		});
+
+		it("Should exit on --help flag", function() {
+			var cli = new Cli()
+				.option({
+					name: 'foo',
+					description: 'foo (defaults to bar)',
+					shortFlag: '-f',
+					longFlag: '--foo',
+					required: true
+				});
+
+			cli.parse(['node', 'cli-test.js', '--help']);
+
+			assert.strictEqual(exitCode, 3);
+		});
+
+		it("Should not exit on --help flag, when exitOnHelp=false", function() {
+			var cli = new Cli({ exitOnHelp: false })
+				.option({
+					name: 'foo',
+					description: 'foo (defaults to bar)',
+					shortFlag: '-f',
+					longFlag: '--foo',
+					required: true
+				});
+
+			cli.parse(['node', 'cli-test.js', '--help']);
+
+			assert.strictEqual(exitCode, null, 'should not have exited process');
 		});
 	});
 });
