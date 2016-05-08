@@ -1,6 +1,5 @@
 var assert = require('assert'),
 	Cli = require('./../lib/Cli'),
-	CliError = require('./../lib/error/abstract-error'),
 	Command = require('./../lib/Command');
 
 describe("Commands", function () {
@@ -73,6 +72,7 @@ describe("Commands", function () {
 		var cli = new Cli();
 
 		var resultCommand = {};
+		var resultCli = {};
 		var resultGroup = {};
 		cli
 			.commandGroup({
@@ -81,11 +81,13 @@ describe("Commands", function () {
 				commands: [
 					new Command({
 						name: 'test1', description: 'The first command option', callback: function (cli, command) {
+							resultCli = cli;
 							resultCommand = command;
 						}
 					}),
 					new Command({
 						name: 'test2', description: 'The second command option', callback: function (cli, command) {
+							resultCli = cli;
 							resultCommand = 'Hello World';
 						}
 					})
@@ -96,13 +98,59 @@ describe("Commands", function () {
 			})
 			.parse(['node', 'cli-test.js', 'test1']);
 		assert.equal(cli.params.cmd1, 'test1');
+		assert.ok(resultCli instanceof Cli, 'resultCli was not instance of Cli');
+		assert.ok(resultCommand instanceof Command, 'resultCommand was not instance of Command');
 		assert.equal(resultCommand.name, 'test1');
 		assert.equal(resultGroup.name, 'test1');
 
 		cli.parse(['node', 'cli-test.js', 'test2']);
 		assert.equal(cli.params.cmd1, 'test2');
+		assert.ok(resultCli instanceof Cli, 'resultCli was not instance of Cli');
 		assert.equal(resultCommand, 'Hello World');
 		assert.equal(resultGroup.name, 'test2');
+	});
+
+	it("Should make a tree of commands easily", function () {
+		var cli = new Cli();
+
+		var finalResult;
+		cli
+			.commandGroup({
+				name: 'cmd1',
+				description: 'main route for the program',
+				commands: [
+					new Command({
+						name: 'test1',
+						description: 'The first command option',
+						callback: function(cli, command) {
+							// Append additional subgroups when this one is chosen.
+							cli.commandGroup({
+								name: 'test1Sub',
+								description: 'the sub command to test1',
+								commands: [
+									new Command({
+										name: 'foo',
+										description: 'Foo should equal bar',
+										callback: function(cli, command) {
+											finalResult = 'bar';
+										}
+									})
+								]
+							});
+						}
+					}),
+					new Command({
+						name: 'test2',
+						description: 'The second command option'
+					})
+				],
+				required: true
+			});
+
+		cli.parse(['node', 'cli-test.js', 'test1', 'foo']);
+		assert.equal(cli.params.cmd1, 'test1');
+		assert.equal(cli.params.test1Sub, 'foo');
+		assert.equal(finalResult, 'bar');
 	});
 
 	it("Should error on extra command", function () {
@@ -120,6 +168,6 @@ describe("Commands", function () {
 
 		assert.throws(function () {
 			cli.parse(['node', 'cli-test.js', 'test3']);
-		});
+		}, 'Didn\'t throw error for extra params as it should');
 	});
 });
