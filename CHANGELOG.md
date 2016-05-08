@@ -1,3 +1,10 @@
+# v0.10.0
+
+**BREAKING CHANGES**
+
+* Added tests to CommandGroup to ensure callbacks were getting called with the correct arguments, they weren't.
+* Added nesting CommandGroup test to ensure creation of trees was possible.
+
 # v0.9.0
 
 * Fixed help exiting - bad exitOnHelp default.

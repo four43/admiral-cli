@@ -135,17 +135,25 @@ describe("Commands", function () {
 											finalResult = 'bar';
 										}
 									})
-								]
+								],
+								required: true
 							});
 						}
 					}),
 					new Command({
 						name: 'test2',
-						description: 'The second command option'
+						description: 'The second command option',
+						callback: function(cli, command) {
+							finalResult = 'hello';
+						}
 					})
 				],
 				required: true
 			});
+
+		cli.parse(['node', 'cli-test.js', 'test2']);
+		assert.equal(cli.params.cmd1, 'test2');
+		assert.equal(finalResult, 'hello');
 
 		cli.parse(['node', 'cli-test.js', 'test1', 'foo']);
 		assert.equal(cli.params.cmd1, 'test1');

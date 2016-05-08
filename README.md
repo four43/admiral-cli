@@ -40,12 +40,10 @@ Quick Example:
 
 ```javascript
 var Cli = require('admiral-cli'),
-    CliCommand = require('admiral-cli').Command,
-    CliInvalidInputError = require('admiral-cli').InvalidInputError,
-    CliConfigError = require('admiral-cli').ConfigError;
 
 var cli = new Cli();
 cli
+    // Command Groups are for fixed options, like 'commit' and 'checkout' in git
     .commandGroup({
         name: 'cmd',
         description: 'Commands are single words, no - or --s, and are one of the following:',
@@ -67,6 +65,7 @@ cli
         },
         required: true
     })
+    // Flags are for true/false switches
     .flag({
         name: 'flagName',
         description: 'Flags are single phrases, set as a boolean',
@@ -79,6 +78,7 @@ cli
         shortFlag: '-n',
         longFlag: '--notPassed'
     })
+    // Options are two parts, a key and a user supplied value.
     .option({
         name: 'optName',
         description: 'Options are two parts, a key and a user supplied value',
@@ -95,10 +95,11 @@ try {
 }
 catch (error) {
     console.error(error);
-    if (error instanceof CliInvalidInputError) {
+    if (error instanceof Cli.InvalidInputError) {
+        // User input something wrong, will display help by default.
         process.exit(2);
     }
-    else if (error instanceof CliConfigError) {
+    else if (error instanceof Cli.ConfigError) {
         console.error('Doh, configured something wrong.', error);
         process.exit(1);
     }
@@ -156,7 +157,7 @@ for `push` (and other top level commands like `commit` and `pull`), then another
 | `description` | String (null)   | Description of this Command Group, used for help text.                                                    |
 | `commands`    | Commands[] ([]) | The set of possible Commands                                                                              |
 | `required`    | Boolean (true)  | This command is required, one of the Commands must be passed.                                             |
-| `callback`    | Function (null) | A callback to call when a command from this command group is parsed, function([Command Group], [Command]) |
+| `callback`    | Function (null) | A callback to call when a command from this command group is parsed, function([Cli], [Command]) |
 
 #### Command Options:
 
@@ -164,7 +165,52 @@ for `push` (and other top level commands like `commit` and `pull`), then another
 |---------------|-----------------|-----------------------------------------------------------------------------------------------------------|
 | `name`        | String (null)   | Name of the Command, used when parsing, so `push` or `commit` from the example above.                     |
 | `description` | String (null)   | Description of this Command, used for help text.                                                          |
-| `callback`    | Function (null) | A callback to call when a command from this command group is parsed, function([Command Group], [Command]) |
+| `callback`    | Function (null) | A callback to call when a command from this command group is parsed, function([Cli], [Command]) |
+
+Creating a tree structure for command routing isn't hard, just add more `CommandGroup`s to the first argument (the base Cli) in the callback
+
+```javascript
+var cli = new Cli();
+
+var finalResult;
+cli
+    .commandGroup({
+        name: 'cmd1',
+        description: 'main route for the program',
+        commands: [
+            new Command({
+                name: 'test1',
+                description: 'The first command option',
+                callback: function(cli, command) {
+                    // Append additional subgroups when this one is chosen.
+                    cli.commandGroup({
+                        name: 'test1Sub',
+                        description: 'the sub command to test1',
+                        commands: [
+                            new Command({
+                                name: 'foo',
+                                description: 'Foo should equal bar',
+                                callback: function(cli, command) {
+                                    finalResult = 'bar';
+                                }
+                            })
+                        ],
+                        required: true
+                    });
+                }
+            }),
+            new Command({
+                name: 'test2',
+                description: 'The second command option'
+            })
+        ],
+        required: true
+    });
+    
+// Calling with: `node ./my-script.sh test1 foo` will set `finalResult` to 'bar'
+// The script will also be able to be called with `node ./my-script.sh test2`
+```
+
 
 ### Flag
 A flag is a single phrase that is set as a boolean and can be passed in any order. Flags that aren't passed are set as false.
