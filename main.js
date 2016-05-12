@@ -4,6 +4,7 @@ var Cli = require('./lib/Cli'),
 	CommandGroup = require('./lib/CommandGroup'),
 	Flag = require('./lib/Flag'),
 	InvalidInputError = require('./lib/error/invalid-input'),
+	Option = require('./lib/Option'),
 	ConfigError = require('./lib/error/config');
 
 //Cli export as instantiated object
@@ -15,3 +16,4 @@ module.exports.ConfigError = ConfigError;
 module.exports.Command = Command;
 module.exports.CommandGroup = CommandGroup;
 module.exports.Flag = Flag;
+module.exports.Option = Option;
