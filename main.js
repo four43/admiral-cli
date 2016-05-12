@@ -1,13 +1,17 @@
 #!/usr/bin/node
 var Cli = require('./lib/Cli'),
-	CliCommand = require('./lib/Command'),
-	CliInvalidInputError = require('./lib/error/invalid-input'),
-	CliConfigError = require('./lib/error/config');
+	Command = require('./lib/Command'),
+	CommandGroup = require('./lib/CommandGroup'),
+	Flag = require('./lib/Flag'),
+	InvalidInputError = require('./lib/error/invalid-input'),
+	ConfigError = require('./lib/error/config');
 
 //Cli export as instantiated object
-exports = module.exports = Cli;
+module.exports = Cli;
 
 //Other exports for errors
-exports.InvalidInputError = CliInvalidInputError;
-exports.ConfigError = CliConfigError;
-exports.Command = CliCommand;
+module.exports.InvalidInputError = InvalidInputError;
+module.exports.ConfigError = ConfigError;
+module.exports.Command = Command;
+module.exports.CommandGroup = CommandGroup;
+module.exports.Flag = Flag;

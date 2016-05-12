@@ -22,6 +22,10 @@ Dependencies: [![Dependency Status](https://david-dm.org/four43/admiral-cli.svg)
 
 Development: [![Build Status](https://travis-ci.org/four43/admiral-cli.svg?branch=development)](https://travis-ci.org/four43/admiral-cli)
 
+__This project sponsored in part by:__
+
+[![AerisWeather](http://branding.aerisweather.com/logo-dark-small.png)](http://www.aerisweather.com) - Empowering the next generation, [aerisweather.com](https://www.aerisweather.com)
+
 ## Installation
 
 [![NPM](https://nodei.co/npm/admiral-cli.png?downloads=true&stars=true)](https://nodei.co/npm/admiral-cli/)
