@@ -242,8 +242,14 @@ describe("Commands", function () {
 				name: 'cmd1',
 				description: 'main route for the program',
 				commands: [
-					new Cli.Command('test1', 'The first command option'),
-					new Cli.Command('test2', 'The second command option')
+					new Cli.Command({
+						name: 'test1',
+						description: 'The first command option'
+					}),
+					new Cli.Command({
+						name: 'test2',
+						description: 'The second command option'
+					})
 				]
 			});
 
