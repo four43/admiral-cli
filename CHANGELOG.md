@@ -1,3 +1,7 @@
+# v0.11.2
+
+* Added .npmignore back, we need to ignore docs too, blast!
+
 # v0.11.1
 
 * Tweaked ignore for .npmignore (just use .gitignore)
