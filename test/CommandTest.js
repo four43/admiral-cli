@@ -105,133 +105,194 @@ describe("Commands", function () {
 		assert.equal(resultGroup.name, 'test2');
 	});
 
-	it("Should make a tree of commands easily", function () {
-		var cli = new Cli();
+	describe("Command Nesting", function() {
 
-		var finalResult;
-		cli
-			.commandGroup({
-				name: 'cmd1',
-				description: 'main route for the program',
-				commands: [
-					new Cli.Command({
-						name: 'test1',
-						description: 'The first command option',
-						callback: function(command) {
-							// Append additional subgroups when this one is chosen.
-							finalResult = 'bar'
-						},
-						subElements: [
-							new Cli.Flag({
-								name: 'hello',
-								description: 'world',
-								shortFlag: '-h',
-								longFlag: '--hello'
-							}),
-							new Cli.Option({
-								name: 'foo',
-								description: 'foober',
-								shortFlag: '-f',
-								longFlag: '--foo',
-								required: true
-							})
-						]
-					}),
-					new Cli.Command({
-						name: 'test2',
-						description: 'The second command option',
-						callback: function(command) {
-							finalResult = 'hello';
-						},
-						subElements: [
-							new Cli.Flag({
-								name: 'different',
-								description: 'diff',
-								shortFlag: '-d',
-								longFlag: '--different'
-							})
-						]
-					})
-				],
-				required: true
-			});
+		it("Should make a tree of commands easily", function () {
+			var cli = new Cli();
 
-		cli.parse(['node', 'cli-test.js', 'test1', '-f', 'bar', '--hello']);
-		assert.equal(cli.params.cmd1, 'test1');
-		assert.equal(cli.params.hello, true);
-		assert.equal(cli.params.foo, 'bar');
-		assert.equal(finalResult, 'bar');
+			var finalResult;
+			cli
+				.commandGroup({
+					name: 'cmd1',
+					description: 'main route for the program',
+					commands: [
+						new Cli.Command({
+							name: 'test1',
+							description: 'The first command option',
+							callback: function (command) {
+								// Append additional subgroups when this one is chosen.
+								finalResult = 'bar'
+							},
+							subElements: [
+								new Cli.Flag({
+									name: 'hello',
+									description: 'world',
+									shortFlag: '-h',
+									longFlag: '--hello'
+								}),
+								new Cli.Option({
+									name: 'foo',
+									description: 'foober',
+									shortFlag: '-f',
+									longFlag: '--foo',
+									required: true
+								})
+							]
+						}),
+						new Cli.Command({
+							name: 'test2',
+							description: 'The second command option',
+							callback: function (command) {
+								finalResult = 'hello';
+							},
+							subElements: [
+								new Cli.Flag({
+									name: 'different',
+									description: 'diff',
+									shortFlag: '-d',
+									longFlag: '--different'
+								})
+							]
+						})
+					],
+					required: true
+				});
 
-		cli.parse(['node', 'cli-test.js', 'test2']);
-		assert.equal(cli.params.cmd1, 'test2');
-		assert.equal(cli.params.different, false);
-		assert.equal(finalResult, 'hello');
+			cli.parse(['node', 'cli-test.js', 'test1', '-f', 'bar', '--hello']);
+			assert.equal(cli.params.cmd1, 'test1');
+			assert.equal(cli.params.hello, true);
+			assert.equal(cli.params.foo, 'bar');
+			assert.equal(finalResult, 'bar');
 
-		cli.parse(['node', 'cli-test.js', 'test2', '--different']);
-		assert.equal(cli.params.cmd1, 'test2');
-		assert.equal(cli.params.different, true);
-		assert.equal(finalResult, 'hello');
-	});
+			cli.parse(['node', 'cli-test.js', 'test2']);
+			assert.equal(cli.params.cmd1, 'test2');
+			assert.equal(cli.params.different, false);
+			assert.equal(finalResult, 'hello');
 
-	it("Should make a tree of commands and keep throwing errors", function () {
-		var cli = new Cli();
-
-		var finalResult;
-		cli
-			.commandGroup({
-				name: 'cmd1',
-				description: 'main route for the program',
-				commands: [
-					new Cli.Command({
-						name: 'test1',
-						description: 'The first command option',
-						callback: function(command) {
-							// Append additional subgroups when this one is chosen.
-							finalResult = 'bar'
-						},
-						subElements: [
-							new Cli.Flag({
-								name: 'hello',
-								description: 'world',
-								shortFlag: '-h',
-								longFlag: '--hello'
-							}),
-							new Cli.Option({
-								name: 'foo',
-								description: 'foober',
-								shortFlag: '-f',
-								longFlag: '--foo',
-								required: true
-							})
-						]
-					}),
-					new Cli.Command({
-						name: 'test2',
-						description: 'The second command option',
-						callback: function(command) {
-							finalResult = 'hello';
-						},
-						subElements: [
-							new Cli.Flag({
-								name: 'different',
-								description: 'diff',
-								shortFlag: '-d',
-								longFlag: '--different'
-							})
-						]
-					})
-				],
-				required: true
-			});
-
-		//Missing
-		assert.throws(function () {
-			cli.parse(['node', 'cli-test.js', 'test1']);
+			cli.parse(['node', 'cli-test.js', 'test2', '--different']);
+			assert.equal(cli.params.cmd1, 'test2');
+			assert.equal(cli.params.different, true);
+			assert.equal(finalResult, 'hello');
 		});
 
-		assert.throws(function () {
-			cli.parse(['node', 'cli-test.js', 'test2', 'extra']);
+		it("CommandGroup Nest", function () {
+			var cli = new Cli();
+
+			var finalResult;
+			cli
+				.commandGroup({
+					name: 'greeting',
+					description: 'main route for the program',
+					commands: [
+						new Cli.Command({
+							name: 'hello',
+							description: 'Who are we greeting?',
+							callback: function (command) {
+								// Append additional subgroups when this one is chosen.
+								finalResult = 'bar'
+							},
+							subElements: [
+								new Cli.CommandGroup({
+									name: 'who',
+									description: 'Greeting',
+									commands: [
+										new Cli.Command({
+											name: 'world',
+											description: 'our Earth'
+										}),
+										new Cli.Command({
+											name: 'bro',
+											description: 'a buddy'
+										})
+									]
+								})
+							]
+						}),
+						new Cli.Command({
+							name: 'goodbye',
+							description: 'The second command option',
+							callback: function (command) {
+								finalResult = 'hello';
+							},
+							subElements: [
+								new Cli.Flag({
+									name: 'different',
+									description: 'diff',
+									shortFlag: '-d',
+									longFlag: '--different'
+								})
+							]
+						})
+					],
+					required: true
+				});
+
+			cli.parse(['node', 'cli-test.js', 'hello', 'bro']);
+			assert.equal(cli.params.greeting, 'hello');
+			assert.equal(cli.params.who, 'bro');
 		});
+
+		it("Should make a tree of commands and keep throwing errors", function () {
+			var cli = new Cli();
+
+			var finalResult;
+			cli
+				.commandGroup({
+					name: 'cmd1',
+					description: 'main route for the program',
+					commands: [
+						new Cli.Command({
+							name: 'test1',
+							description: 'The first command option',
+							callback: function (command) {
+								// Append additional subgroups when this one is chosen.
+								finalResult = 'bar'
+							},
+							subElements: [
+								new Cli.Flag({
+									name: 'hello',
+									description: 'world',
+									shortFlag: '-h',
+									longFlag: '--hello'
+								}),
+								new Cli.Option({
+									name: 'foo',
+									description: 'foober',
+									shortFlag: '-f',
+									longFlag: '--foo',
+									required: true
+								})
+							]
+						}),
+						new Cli.Command({
+							name: 'test2',
+							description: 'The second command option',
+							callback: function (command) {
+								finalResult = 'hello';
+							},
+							subElements: [
+								new Cli.Flag({
+									name: 'different',
+									description: 'diff',
+									shortFlag: '-d',
+									longFlag: '--different'
+								})
+							]
+						})
+					],
+					required: true
+				});
+
+			//Missing
+			assert.throws(function () {
+				cli.parse(['node', 'cli-test.js', 'test1']);
+			});
+
+			assert.throws(function () {
+				cli.parse(['node', 'cli-test.js', 'test2', 'extra']);
+			});
+		});
+
 	});
 
 	it("Should error on extra command", function () {
