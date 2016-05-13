@@ -22,6 +22,10 @@ Dependencies: [![Dependency Status](https://david-dm.org/four43/admiral-cli.svg)
 
 Development: [![Build Status](https://travis-ci.org/four43/admiral-cli.svg?branch=development)](https://travis-ci.org/four43/admiral-cli)
 
+__This project sponsored in part by:__
+
+[![AerisWeather](http://branding.aerisweather.com/logo-dark-small.png)](http://www.aerisweather.com) - Empowering the next generation, [aerisweather.com](https://www.aerisweather.com)
+
 ## Installation
 
 [![NPM](https://nodei.co/npm/admiral-cli.png?downloads=true&stars=true)](https://nodei.co/npm/admiral-cli/)
@@ -51,7 +55,7 @@ cli
             new CliCommand({
                 name: 'add',
                 description: 'The variable cmd will be set to add in this case',
-                callback: function (cli, command) {
+                callback: function (command) {
                     var doSome = 'stuff';
                 }
             }),
@@ -60,7 +64,7 @@ cli
                 description: 'A user could also specify another'
             })
         ],
-        callback: function commandLevelCallback(cli, command) {
+        callback: function commandLevelCallback(command) {
             var theCommandObjThatWasChosen = command;
         },
         required: true
@@ -181,7 +185,7 @@ cli
             new Command({
                 name: 'test1',
                 description: 'The first command option',
-                callback: function(cli, command) {
+                callback: function(command) {
                     // Append additional subgroups when this one is chosen.
                     cli.commandGroup({
                         name: 'test1Sub',
@@ -190,7 +194,7 @@ cli
                             new Command({
                                 name: 'foo',
                                 description: 'Foo should equal bar',
-                                callback: function(cli, command) {
+                                callback: function(command) {
                                     finalResult = 'bar';
                                 }
                             })

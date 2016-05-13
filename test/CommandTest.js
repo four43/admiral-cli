@@ -1,6 +1,5 @@
 var assert = require('assert'),
-	Cli = require('./../lib/Cli'),
-	Command = require('./../lib/Command');
+	Cli = require('./../main');
 
 describe("Commands", function () {
 	it("Should parse basic command", function () {
@@ -11,8 +10,8 @@ describe("Commands", function () {
 				name: 'cmd1',
 				description: 'main route for the program',
 				commands: [
-					new Command({name: 'test1', description: 'The first command option'}),
-					new Command({name: 'test2', description: 'The second command option'})
+					new Cli.Command({name: 'test1', description: 'The first command option'}),
+					new Cli.Command({name: 'test2', description: 'The second command option'})
 				]
 			})
 			.parse(['node', 'cli-test.js', 'test1']);
@@ -30,8 +29,8 @@ describe("Commands", function () {
 				name: 'cmd1',
 				description: 'main route for the program',
 				commands: [
-					new Command({name: 'test1', description: 'The first command option'}),
-					new Command({name: 'test2', description: 'The second command option'})
+					new Cli.Command({name: 'test1', description: 'The first command option'}),
+					new Cli.Command({name: 'test2', description: 'The second command option'})
 				],
 				required: true
 			})
@@ -39,8 +38,8 @@ describe("Commands", function () {
 				name: 'cmd2',
 				description: 'secondary route for the program',
 				commands: [
-					new Command({name: 'testA', description: 'The first command option'}),
-					new Command({name: 'testB', description: 'The second command option'})
+					new Cli.Command({name: 'testA', description: 'The first command option'}),
+					new Cli.Command({name: 'testB', description: 'The second command option'})
 				],
 				required: true
 			})
@@ -57,8 +56,8 @@ describe("Commands", function () {
 				name: 'cmd1',
 				description: 'main route for the program',
 				commands: [
-					new Command({name: 'test1', description: 'The first command option'}),
-					new Command({name: 'test2', description: 'The second command option'})
+					new Cli.Command({name: 'test1', description: 'The first command option'}),
+					new Cli.Command({name: 'test2', description: 'The second command option'})
 				],
 				required: true
 			});
@@ -79,33 +78,29 @@ describe("Commands", function () {
 				name: 'cmd1',
 				description: 'main route for the program',
 				commands: [
-					new Command({
-						name: 'test1', description: 'The first command option', callback: function (cli, command) {
-							resultCli = cli;
+					new Cli.Command({
+						name: 'test1', description: 'The first command option', callback: function (command) {
 							resultCommand = command;
 						}
 					}),
-					new Command({
-						name: 'test2', description: 'The second command option', callback: function (cli, command) {
-							resultCli = cli;
+					new Cli.Command({
+						name: 'test2', description: 'The second command option', callback: function (command) {
 							resultCommand = 'Hello World';
 						}
 					})
 				],
-				callback: function (cli, command) {
+				callback: function (command) {
 					resultGroup = command;
 				}.bind(this)
 			})
 			.parse(['node', 'cli-test.js', 'test1']);
 		assert.equal(cli.params.cmd1, 'test1');
-		assert.ok(resultCli instanceof Cli, 'resultCli was not instance of Cli');
-		assert.ok(resultCommand instanceof Command, 'resultCommand was not instance of Command');
+		assert.ok(resultCommand instanceof Cli.Command, 'resultCommand was not instance of Command');
 		assert.equal(resultCommand.name, 'test1');
 		assert.equal(resultGroup.name, 'test1');
 
 		cli.parse(['node', 'cli-test.js', 'test2']);
 		assert.equal(cli.params.cmd1, 'test2');
-		assert.ok(resultCli instanceof Cli, 'resultCli was not instance of Cli');
 		assert.equal(resultCommand, 'Hello World');
 		assert.equal(resultGroup.name, 'test2');
 	});
@@ -119,46 +114,124 @@ describe("Commands", function () {
 				name: 'cmd1',
 				description: 'main route for the program',
 				commands: [
-					new Command({
+					new Cli.Command({
 						name: 'test1',
 						description: 'The first command option',
-						callback: function(cli, command) {
+						callback: function(command) {
 							// Append additional subgroups when this one is chosen.
-							cli.commandGroup({
-								name: 'test1Sub',
-								description: 'the sub command to test1',
-								commands: [
-									new Command({
-										name: 'foo',
-										description: 'Foo should equal bar',
-										callback: function(cli, command) {
-											finalResult = 'bar';
-										}
-									})
-								],
+							finalResult = 'bar'
+						},
+						subElements: [
+							new Cli.Flag({
+								name: 'hello',
+								description: 'world',
+								shortFlag: '-h',
+								longFlag: '--hello'
+							}),
+							new Cli.Option({
+								name: 'foo',
+								description: 'foober',
+								shortFlag: '-f',
+								longFlag: '--foo',
 								required: true
-							});
-						}
+							})
+						]
 					}),
-					new Command({
+					new Cli.Command({
 						name: 'test2',
 						description: 'The second command option',
-						callback: function(cli, command) {
+						callback: function(command) {
 							finalResult = 'hello';
-						}
+						},
+						subElements: [
+							new Cli.Flag({
+								name: 'different',
+								description: 'diff',
+								shortFlag: '-d',
+								longFlag: '--different'
+							})
+						]
 					})
 				],
 				required: true
 			});
 
+		cli.parse(['node', 'cli-test.js', 'test1', '-f', 'bar', '--hello']);
+		assert.equal(cli.params.cmd1, 'test1');
+		assert.equal(cli.params.hello, true);
+		assert.equal(cli.params.foo, 'bar');
+		assert.equal(finalResult, 'bar');
+
 		cli.parse(['node', 'cli-test.js', 'test2']);
 		assert.equal(cli.params.cmd1, 'test2');
+		assert.equal(cli.params.different, false);
 		assert.equal(finalResult, 'hello');
 
-		cli.parse(['node', 'cli-test.js', 'test1', 'foo']);
-		assert.equal(cli.params.cmd1, 'test1');
-		assert.equal(cli.params.test1Sub, 'foo');
-		assert.equal(finalResult, 'bar');
+		cli.parse(['node', 'cli-test.js', 'test2', '--different']);
+		assert.equal(cli.params.cmd1, 'test2');
+		assert.equal(cli.params.different, true);
+		assert.equal(finalResult, 'hello');
+	});
+
+	it("Should make a tree of commands and keep throwing errors", function () {
+		var cli = new Cli();
+
+		var finalResult;
+		cli
+			.commandGroup({
+				name: 'cmd1',
+				description: 'main route for the program',
+				commands: [
+					new Cli.Command({
+						name: 'test1',
+						description: 'The first command option',
+						callback: function(command) {
+							// Append additional subgroups when this one is chosen.
+							finalResult = 'bar'
+						},
+						subElements: [
+							new Cli.Flag({
+								name: 'hello',
+								description: 'world',
+								shortFlag: '-h',
+								longFlag: '--hello'
+							}),
+							new Cli.Option({
+								name: 'foo',
+								description: 'foober',
+								shortFlag: '-f',
+								longFlag: '--foo',
+								required: true
+							})
+						]
+					}),
+					new Cli.Command({
+						name: 'test2',
+						description: 'The second command option',
+						callback: function(command) {
+							finalResult = 'hello';
+						},
+						subElements: [
+							new Cli.Flag({
+								name: 'different',
+								description: 'diff',
+								shortFlag: '-d',
+								longFlag: '--different'
+							})
+						]
+					})
+				],
+				required: true
+			});
+
+		//Missing
+		assert.throws(function () {
+			cli.parse(['node', 'cli-test.js', 'test1']);
+		});
+
+		assert.throws(function () {
+			cli.parse(['node', 'cli-test.js', 'test2', 'extra']);
+		});
 	});
 
 	it("Should error on extra command", function () {
@@ -169,8 +242,14 @@ describe("Commands", function () {
 				name: 'cmd1',
 				description: 'main route for the program',
 				commands: [
-					new Command('test1', 'The first command option'),
-					new Command('test2', 'The second command option')
+					new Cli.Command({
+						name: 'test1',
+						description: 'The first command option'
+					}),
+					new Cli.Command({
+						name: 'test2',
+						description: 'The second command option'
+					})
 				]
 			});
 

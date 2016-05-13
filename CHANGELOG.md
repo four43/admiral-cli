@@ -1,3 +1,11 @@
+# v0.11.0
+
+**BREAKING CHANGES**
+
+* Modified Changed signature of callbacks for Commands again. `cli` is in scope, don't send that back.
+* Added Command.subElements, to help build out trees of commands.
+* Updated README to reflect changes.
+
 # v0.10.0
 
 **BREAKING CHANGES**

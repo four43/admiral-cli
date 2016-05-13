@@ -1,7 +1,6 @@
 var assert = require('assert'),
 	fs = require('fs'),
-	Cli = require('./../lib/Cli'),
-	Command = require('./../lib/Command');
+	Cli = require('./../main');
 
 describe("Cli", function () {
 	var processExitOrig, exitCode = null;
@@ -24,8 +23,8 @@ describe("Cli", function () {
 					name: 'cmd1',
 					description: 'main route for the program',
 					commands: [
-						new Command({name: 'test1', description: 'The first command option'}),
-						new Command({name: 'test2', description: 'The second command option'})
+						new Cli.Command({name: 'test1', description: 'The first command option'}),
+						new Cli.Command({name: 'test2', description: 'The second command option'})
 					],
 					required: true
 				})
@@ -33,8 +32,8 @@ describe("Cli", function () {
 					name: 'anotherCmd',
 					description: 'Secondary command, changes the output of the thing',
 					commands: [
-						new Command({name: 't1', description: 'To test the first bit'}),
-						new Command({name: 't2', description: 'To test the second bit'})
+						new Cli.Command({name: 't1', description: 'To test the first bit'}),
+						new Cli.Command({name: 't2', description: 'To test the second bit'})
 					],
 					required: true
 				});
