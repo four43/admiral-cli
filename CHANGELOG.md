@@ -1,3 +1,8 @@
+# v0.11.1
+
+* Tweaked ignore for .npmignore (just use .gitignore)
+* Added test for nesting Commands with CommandGroups
+
 # v0.11.0
 
 **BREAKING CHANGES**
