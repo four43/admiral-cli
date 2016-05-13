@@ -1,3 +1,7 @@
+# v0.11.4
+
+* Fixed catching bad Commands passed to CommandGroups
+
 # v0.11.3
 
 * Fix bug where results of subElements weren't saving right away so Command callbacks had inconsistent results.

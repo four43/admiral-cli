@@ -21,6 +21,22 @@ describe("Commands", function () {
 		assert.equal(cli.params.cmd1, 'test2');
 	});
 
+	it("Should complain when commands aren't instances of Command", function () {
+		var cli = new Cli();
+
+		assert.throws(function () {
+			cli
+				.commandGroup({
+					name: 'cmd1',
+					description: 'main route for the program',
+					commands: [
+						new Cli.Command({name: 'test1', description: 'The first command option'}),
+						"Nah"
+					]
+				});
+		});
+	});
+
 	it("Should parse basic command, multiple commands", function () {
 		var cli = new Cli();
 
@@ -105,7 +121,7 @@ describe("Commands", function () {
 		assert.equal(resultGroup.name, 'test2');
 	});
 
-	describe("Command Nesting", function() {
+	describe("Command Nesting", function () {
 
 		it("Should make a tree of commands easily", function () {
 			var cli = new Cli();
