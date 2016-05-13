@@ -175,6 +175,61 @@ describe("Commands", function () {
 			assert.equal(finalResult, 'hello');
 		});
 
+		it("Should process sub commands before triggering callback", function () {
+			var cli = new Cli();
+
+			var finalResult;
+			cli
+				.commandGroup({
+					name: 'cmd1',
+					description: 'main route for the program',
+					commands: [
+						new Cli.Command({
+							name: 'test1',
+							description: 'The first command option',
+							callback: function (command) {
+								// Append additional subgroups when this one is chosen.
+								assert.equal(cli.params.hello, true);
+								assert.equal(cli.params.foo, 'bar');
+							},
+							subElements: [
+								new Cli.Flag({
+									name: 'hello',
+									description: 'world',
+									shortFlag: '-h',
+									longFlag: '--hello'
+								}),
+								new Cli.Option({
+									name: 'foo',
+									description: 'foober',
+									shortFlag: '-f',
+									longFlag: '--foo',
+									required: true
+								})
+							]
+						}),
+						new Cli.Command({
+							name: 'test2',
+							description: 'The second command option',
+							callback: function (command) {
+								finalResult = 'hello';
+							},
+							subElements: [
+								new Cli.Flag({
+									name: 'different',
+									description: 'diff',
+									shortFlag: '-d',
+									longFlag: '--different'
+								})
+							]
+						})
+					],
+					required: true
+				});
+
+			cli.parse(['node', 'cli-test.js', 'test1', '-f', 'bar', '--hello']);
+		});
+
 		it("CommandGroup Nest", function () {
 			var cli = new Cli();
 

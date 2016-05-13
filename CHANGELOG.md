@@ -1,3 +1,7 @@
+# v0.11.3
+
+* Fix bug where results of subElements weren't saving right away so Command callbacks had inconsistent results.
+
 # v0.11.2
 
 * Added .npmignore back, we need to ignore docs too, blast!
