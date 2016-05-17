@@ -1,3 +1,7 @@
+# v0.12.0
+
+* Updated TTY output for help text. Much better for nested commands.
+
 # v0.11.4
 
 * Fixed catching bad Commands passed to CommandGroups
