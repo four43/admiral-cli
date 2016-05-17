@@ -1,7 +1,6 @@
 Usage: cli-test.js [options]
-
 Options:
- -t, --test1  Just a test opt      
- -a           Just another test opt
- --last       The last test opt    
+	-t,--test1 - Just a test opt
+	-a - Just another test opt
+	--last - The last test opt
 

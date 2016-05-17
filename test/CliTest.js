@@ -36,6 +36,24 @@ describe("Cli", function () {
 						new Cli.Command({name: 't2', description: 'To test the second bit'})
 					],
 					required: true
+				})
+				.flag({
+					name: 'flag1',
+					description: 'Just a test flag',
+					shortFlag: '-t',
+					longFlag: '--test1'
+				})
+				.option({
+					name: 'option1',
+					description: 'Just a test opt',
+					shortFlag: '-o',
+					longFlag: '--opt'
+				})
+				.flag({
+					name: 'flag2',
+					description: 'Another test flag',
+					shortFlag: '-u',
+					longFlag: '--test2'
 				});
 			hookStdout();
 			cli.parse(['node', 'cli-test.js']);
@@ -145,6 +163,112 @@ describe("Cli", function () {
 			cli.parse(['node', 'cli-test.js', '--help']);
 
 			assert.strictEqual(exitCode, null, 'should not have exited process');
+		});
+
+		it("Should display deep nested help text", function () {
+			var cli = new Cli();
+			cli
+				.commandGroup({
+					name: 'cmd1',
+					description: 'main route for the program',
+					commands: [
+						new Cli.Command({
+							name: 'test1',
+							description: 'The first command option',
+							subElements: [
+								new Cli.CommandGroup({
+									name: 'test1Nested',
+									description: 'Another set of commands',
+									commands: [
+										new Cli.Command({
+											name: 'A',
+											description: 'The first choice'
+										}),
+										new Cli.Command({
+											name: 'B',
+											description: 'The second choice'
+										})
+									]
+								})
+							]
+						}),
+						new Cli.Command({name: 'test2', description: 'The second command option'})
+					],
+					required: true
+				})
+				.commandGroup({
+					name: 'anotherCmd',
+					description: 'Secondary command, changes the output of the thing',
+					commands: [
+						new Cli.Command({name: 't1', description: 'To test the first bit'}),
+						new Cli.Command({name: 't2', description: 'To test the second bit'})
+					],
+					required: true
+				});
+			hookStdout();
+			cli.parse(['node', 'cli-test.js']);
+			unhookStdout();
+
+			console.log(stdOutBuffer);
+			var expected = fs.readFileSync(__dirname + '/outputs/helpTextNestedCommand.txt', 'utf8');
+			assert.equal(stdOutBuffer, expected);
+		});
+
+		it("Should display deep nested help text - Flags, Options", function () {
+			var cli = new Cli();
+			cli
+				.commandGroup({
+					name: 'cmd1',
+					description: 'main route for the program',
+					commands: [
+						new Cli.Command({
+							name: 'test1',
+							description: 'The first command option',
+							subElements: [
+								new Cli.CommandGroup({
+									name: 'test1Nested',
+									description: 'Another set of commands',
+									commands: [
+										new Cli.Command({
+											name: 'A',
+											description: 'The first choice',
+											subElements: [
+												new Cli.Flag({
+													name: 'Force',
+													description: 'Make it go',
+													shortFlag: '-f',
+													longFlag: '--force'
+												})
+											]
+										}),
+										new Cli.Command({
+											name: 'B',
+											description: 'The second choice'
+										})
+									]
+								})
+							]
+						}),
+						new Cli.Command({name: 'test2', description: 'The second command option'})
+					],
+					required: true
+				})
+				.commandGroup({
+					name: 'anotherCmd',
+					description: 'Secondary command, changes the output of the thing',
+					commands: [
+						new Cli.Command({name: 't1', description: 'To test the first bit'}),
+						new Cli.Command({name: 't2', description: 'To test the second bit'})
+					],
+					required: true
+				});
+			hookStdout();
+			cli.parse(['node', 'cli-test.js']);
+			unhookStdout();
+
+			console.log(stdOutBuffer);
+			var expected = fs.readFileSync(__dirname + '/outputs/helpTextNestedOther.txt', 'utf8');
+			assert.equal(stdOutBuffer, expected);
 		});
 	});
 });
